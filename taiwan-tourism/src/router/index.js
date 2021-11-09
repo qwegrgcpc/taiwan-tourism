@@ -1,5 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import SearchScenicSpot from '../views/Search/ScenicSpot.vue'
+import SearchHotel from '../views/Search/Hotel.vue'
+import SearchRestaurant from '../views/Search/Restaurant.vue'
+import DetailScenicSpot from '../views/Detail/ScenicSpot.vue'
+import DetailHotel from '../views/Detail/Hotel.vue'
+import DetailRestaurant from '../views/Detail/Restaurant.vue'
+import ItineraryList from '../views/Home.vue'
+import Schedule from '../views/Home.vue'
+
 
 const routes = [
   {
@@ -10,42 +19,42 @@ const routes = [
   {
     path: '/Search/ScenicSpot',
     name: 'SearchScenicSpot',
-    component: Home
+    component: SearchScenicSpot
   },
   {
     path: '/Search/Hotel',
     name: 'SearchHotel',
-    component: Home
+    component: SearchHotel
   },
   {
     path: '/Search/Restaurant',
     name: 'SearchRestaurant',
-    component: Home
+    component: SearchRestaurant
   },
   {
     path: '/Detail/ScenicSpot/:id',
     name: 'DetailScenicSpot',
-    component: Home
+    component: DetailScenicSpot
   },
   {
     path: '/Detail/Hotel/:id',
     name: 'DetailHotel',
-    component: Home
+    component: DetailHotel
   },
   {
     path: '/Detail/Restaurant/:id',
     name: 'DetailRestaurant',
-    component: Home
+    component: DetailRestaurant
   },
   {
     path: '/ItineraryList',
     name: 'ItineraryList',
-    component: Home
+    component: ItineraryList
   },
   {
     path: '/Schedule/:id',
     name: 'Schedule',
-    component: Home
+    component: Schedule
   }
 ]
 
