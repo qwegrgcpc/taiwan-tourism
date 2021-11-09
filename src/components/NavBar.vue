@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav" :class="{ active: $breakpoint.isSmaller('lg') && isOpen }">
+  <nav class="nav" :class="{ active: isSmallerLg && isOpen }">
     <div class="nav_area">
       <div class="vertical-center">
         <img
@@ -8,7 +8,6 @@
           alt="台灣哪裡趣"
         />
       </div>
-      {{ $breakpoint.isSmaller('lg') }}
       <div class="block lg:hidden">
         <button class="py-2" @click="isOpen = !isOpen">
           <img class="h-5" :src="require(`@/assets/images/${menuIcon}.svg`)" />
@@ -40,18 +39,21 @@
 export default {
   data() {
     return {
-      isOpen: false
-    }
+      isOpen: false,
+    };
   },
   computed: {
     menuIcon() {
-      return this.isOpen ? 'menuClose' : 'menu'
+      return this.isOpen ? "menuClose" : "menu";
+    },
+    isSmallerLg() {
+      return this.$breakpoint.isSmaller('lg');
     },
     showMenuList() {
-      return this.$breakpoint.is !== 'min' || this.isOpen
-    }
-  }
-}
+      return !this.isSmallerLg || (this.isSmallerLg && this.isOpen) 
+    },
+  },
+};
 </script>
 
 <style scoped>
