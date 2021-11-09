@@ -5,6 +5,18 @@ module.exports = {
   presets: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    extend: {
+      colors: {
+        'j-blue': {
+          '100': '#D7EAEC',
+          '200': '#06919D',
+          '300': '#1D6168',
+        },
+        'j-black': {
+          '900': '#1C1C1C',
+        }
+      }
+    },
     screens: {
       sm: '640px',
       md: '768px',

@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <template v-for="i in 10" :key="i">
+      <HelloWorld msg="Welcome to Your Vue.js App" />
+    </template>
   </div>
 </template>
 
