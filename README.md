@@ -1,24 +1,7 @@
+<p align="center"><img align="center" src="./src/assets/images/logo.svg"/></p><br/>
+
 # taiwan-tourism
 
-## Project setup
-```
-npm install
-```
+台灣哪裡趣，透過旅行中不可或缺的三大要素：景點、旅宿、餐飲，透過最直覺的方式收藏喜歡的項目，再經由自訂行程功能，將收藏的項目編排成自己尋訪台灣獨一無二的專屬行程！
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[台灣哪裡趣](https://qwegrgcpc.github.io/taiwan-tourism/#/)
