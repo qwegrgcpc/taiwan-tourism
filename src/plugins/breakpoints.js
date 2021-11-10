@@ -23,18 +23,6 @@ const getBreakpoint = (w) => {
   else return 'min'
 }
 
-const debounce = function (func, wait) {
-  var timeout
-  return () => {
-    const later = function () {
-      timeout = null
-    }
-    const callNow = !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if (callNow) func()
-  }
-}
 
 const breakpoints = reactive({
   w: window.innerWidth,
@@ -48,11 +36,11 @@ const is = computed(() => breakpoints.is)
 
 window.addEventListener(
   'resize',
-  debounce(() => {
+  () => {
     breakpoints.w = window.innerWidth
     breakpoints.h = window.innerHeight
     breakpoints.is = getBreakpoint(window.innerWidth)
-  }),
+  },
   false
 )
 
