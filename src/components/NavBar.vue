@@ -62,7 +62,7 @@ export default {
   align-items: center;
 }
 .nav {
-  @apply sticky top-0 bg-white w-full;
+  @apply sticky top-0 bg-white w-full z-50;
 }
 .nav.active {
   @apply fixed h-full;
