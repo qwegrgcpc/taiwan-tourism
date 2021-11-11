@@ -14,8 +14,10 @@ module.exports = {
         },
         'j-black': {
           '100': '#E1E1E1',
+          '500': '#707070',
           '900': '#1C1C1C',
-        }
+        },
+        'j-orange': '#ff7b38'
       }
     },
     screens: {
