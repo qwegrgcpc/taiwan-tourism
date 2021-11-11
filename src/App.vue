@@ -4,7 +4,11 @@
 </template>
 <script>
 import NavBar from '@/components/NavBar.vue'
-import { fetchScenicSpotAll } from '@/apis/tourism'
+import {
+  // fetchScenicSpotAll,
+  // fetchRestaurantAll,
+  // fetchHotelAll
+} from '@/apis/tourism'
 export default {
   name: 'Home',
   components: {
@@ -12,9 +16,15 @@ export default {
   },
   mounted() {
     // example
-    fetchScenicSpotAll({ $top: 30 }).then(({ data }) => {
-      console.log(data)
-    })
+    // fetchScenicSpotAll({ }).then(({ data }) => {
+    //   console.log(data)
+    // })
+    // fetchRestaurantAll({ $top: 10 }).then(({ data }) => {
+    //   console.log(data)
+    // })
+    // fetchHotelAll({ $top: 10 }).then(({ data }) => {
+    //   console.log(data)
+    // })
   }
 }
 </script>
