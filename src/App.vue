@@ -16,7 +16,7 @@ export default {
   },
   mounted() {
     // example
-    // fetchScenicSpotAll({ }).then(({ data }) => {
+    // fetchScenicSpotAll({ $top: 10 }).then(({ data }) => {
     //   console.log(data)
     // })
     // fetchRestaurantAll({ $top: 10 }).then(({ data }) => {
