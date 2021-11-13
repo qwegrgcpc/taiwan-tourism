@@ -62,7 +62,7 @@ export default {
   align-items: center;
 }
 .nav {
-  @apply sticky top-0 bg-white w-full z-50;
+  @apply sticky top-0 bg-white w-full z-50 py-3;
 }
 .nav.active {
   @apply fixed h-full;
@@ -79,10 +79,10 @@ export default {
 
 @screen lg {
   .nav {
-    @apply px-10 sticky top-0;
+    @apply px-10 sticky top-0 py-0;
   }
   .nav_area {
-    @apply px-10 h-24;
+    @apply px-0 h-24;
   }
   .menu_list {
     @apply flex lg:flex-row flex-col items-center;

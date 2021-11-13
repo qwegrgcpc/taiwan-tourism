@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const aspectRatio = require('@tailwindcss/aspect-ratio')
 
 module.exports = {
   purge: { content: ['./public/**/*.html', './src/**/*.vue'] },
@@ -13,6 +14,7 @@ module.exports = {
           '300': '#1D6168',
         },
         'j-black': {
+          '50': '#F8F8F8',
           '100': '#E1E1E1',
           '500': '#707070',
           '900': '#1C1C1C',
@@ -982,5 +984,5 @@ module.exports = {
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
   },
-  plugins: [],
+  plugins: [aspectRatio],
 }
