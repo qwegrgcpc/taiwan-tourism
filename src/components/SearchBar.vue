@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="tabArea">
-      <ul class="tabList">
+      <ul class="flex">
         <li
           v-for="tab in tabList"
           :key="tab.value"
@@ -152,16 +152,12 @@ export default {
 }
 </script>
 <style scoped>
-.tabList {
-  @apply flex;
-}
-
-.tabList > li {
-  @apply mr-10 bold_text py-1 px-2;
+.flex > li {
+  @apply mr-10 bold_text py-1 px-2 cursor-pointer;
   @apply text-j-black-500;
 }
 
-.tabList > .active {
+.flex > .active {
   @apply bold_text z-20 border-j-orange border-b-4;
 }
 
@@ -183,14 +179,7 @@ export default {
 }
 
 .input {
-  @apply rounded-lg max-w-xl h-10 border border-gray-300 mt-3 py-1 px-3;
-}
-
-.input_text button,
-input,
-optgroup,
-select {
-  @apply text-j-black-900;
+  @apply rounded-lg max-w-xl h-10 border border-gray-300 mt-3 py-1 px-3 cursor-pointer;
 }
 
 .input_text button,
@@ -198,11 +187,11 @@ input,
 optgroup,
 select,
 textarea {
-  @apply text-lg font-normal text-gray-500 appearance-none;
+  @apply text-lg text-gray-500 appearance-none;
 }
 
 .search_btn {
-  @apply rounded-lg w-20 h-10 text-lg text-white text-center py-1 leading-8 self-end bg-j-orange;
+  @apply rounded-lg w-20 h-10 text-lg text-white text-center py-1 leading-8 self-end bg-j-orange cursor-pointer;
 }
 
 .dropdown_icon {
