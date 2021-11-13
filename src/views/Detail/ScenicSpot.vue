@@ -12,21 +12,40 @@
     </div>
     <div class="images">
       <div class="main_img">
-        <img class="img" :src="detailInfo.Picture.PictureUrl1" />
+        <img
+          class="img"
+          v-src="detailInfo.Picture.PictureUrl1"
+          :alt="detailInfo.Picture.PictureDescription1"
+        />
       </div>
       <div class="side_img">
-        <img class="img" :src="detailInfo.Picture.PictureUrl1" />
+        <img
+          class="img"
+          v-src="detailInfo.Picture.PictureUrl2"
+          :alt="detailInfo.Picture.PictureDescription1"
+        />
       </div>
       <div class="side_img">
-        <img class="img" :src="detailInfo.Picture.PictureUrl1" />
+        <img
+          class="img"
+          v-src="detailInfo.Picture.PictureUrl3"
+          :alt="detailInfo.Picture.PictureDescription1"
+        />
       </div>
       <div class="side_img">
-        <img class="img" :src="detailInfo.Picture.PictureUrl1" />
+        <img
+          class="img"
+          v-src="detailInfo.Picture.PictureUrl3"
+          :alt="detailInfo.Picture.PictureDescription1"
+        />
       </div>
     </div>
     <div class="intro">
       <div class="content">
         <div class="content_title">景點介紹</div>
+        <div class="content_subtitle">
+          {{ detailInfo.Picture.PictureDescription1 }}
+        </div>
         <div class="content_desc">{{ detailInfo.DescriptionDetail }}</div>
       </div>
       <div class="info">
@@ -63,9 +82,12 @@ export default {
       Description: null,
       DescriptionDetail: null,
       Picture: {
-        PictureUrl1: null,
-        PictureUrl2: null,
-        PictureUrl3: null,
+        PictureUrl1: '@/asets/images/empty.svg',
+        PictureUrl2: '@/asets/images/empty.svg',
+        PictureUrl3: '@/asets/images/empty.svg',
+        PictureDescription1: null,
+        PictureDescription2: null,
+        PictureDescription3: null,
       },
       OpenTime: null,
       Phone: null,
@@ -76,7 +98,7 @@ export default {
       $filter: `ID eq '${id}'`,
     }).then(({ data }) => {
       data[0].City = filterCity(data[0].ZipCode);
-      console.log(data[0].City);
+      console.log(data[0]);
       detailInfo.value = data[0];
     });
 
@@ -148,6 +170,9 @@ export default {
 .content_title {
   @apply title mb-2;
 }
+.content_subtitle {
+  @apply text-j-blue-200 text-lg font-bold;
+}
 .content_desc {
   @apply text-j-black-900 leading-8 mb-10;
 }
@@ -181,6 +206,7 @@ export default {
     max-width: 1280px;
   }
   .header {
+    @apply mx-0 pt-3 pb-10;
     grid-template-columns: auto 1fr 64px;
     grid-template-areas:
       "title location favorite"
@@ -199,7 +225,7 @@ export default {
     @apply flex-col justify-end items-center py-0;
   }
   .images {
-    @apply grid-cols-12 gap-5;
+    @apply grid-cols-12 gap-5 px-0;
   }
   .main_img {
     @apply col-span-9;
@@ -214,13 +240,13 @@ export default {
     @apply grid py-3 grid-cols-12 gap-14;
   }
   .content {
-    @apply col-span-8;
+    @apply col-span-8 mx-0;
+  }
+  .content_subtitle {
+    @apply mb-3 pt-2;
   }
   .info {
-    @apply col-span-4;
-  }
-  .info {
-    @apply pt-5 pb-10 rounded-2xl;
+    @apply col-span-4 pt-5 pb-10 rounded-2xl bg-white border border-j-black-100;
   }
 }
 </style>
