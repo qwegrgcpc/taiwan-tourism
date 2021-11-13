@@ -5,8 +5,10 @@
       <div class="location">
         <img src="@/assets/images/map.svg" />{{ detailInfo.City }}
       </div>
-      <div class="favorite">
-        <img src="@/assets/images/addJourneyBig.svg" />加入收藏
+      <div class="favorite" @click="clickAddFavorite">
+        <img v-show="isFavorite" src="@/assets/images/addedJourneyBig.svg" />
+        <img v-show="!isFavorite" src="@/assets/images/addJourneyBig.svg" />
+        加入收藏
       </div>
       <div class="desc">{{ detailInfo.Description }}</div>
     </div>
@@ -68,14 +70,16 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
-import { fetchScenicSpotAll } from "@/apis/tourism";
-import { ref } from "vue";
-import { filterCity } from "@/utils/filter";
+import { useRoute } from 'vue-router'
+import { fetchScenicSpotAll } from '@/apis/tourism'
+import { ref, computed } from 'vue'
+import { filterCity } from '@/utils/filter'
+import { useStore } from 'vuex'
 export default {
-  name: "Detail",
+  name: 'Detail',
   setup() {
-    const { id } = useRoute().params;
+    const { id } = useRoute().params
+    const store = useStore()
     const detailInfo = ref({
       Name: null,
       City: null,
@@ -87,26 +91,40 @@ export default {
         PictureUrl3: '@/asets/images/empty.svg',
         PictureDescription1: null,
         PictureDescription2: null,
-        PictureDescription3: null,
+        PictureDescription3: null
       },
       OpenTime: null,
       Phone: null,
-      Address: null,
-    });
+      Address: null
+    })
+
+    const isFavorite = computed(() => {
+      return !!store.state.favoriteList.find((e) => e === id)
+    })
+
+    const clickAddFavorite = () => {
+      if (isFavorite.value) {
+        store.commit('removeFavorite', id)
+        return
+      }
+      store.commit('addFavorite', id)
+    }
 
     fetchScenicSpotAll({
-      $filter: `ID eq '${id}'`,
+      $filter: `ID eq '${id}'`
     }).then(({ data }) => {
-      data[0].City = filterCity(data[0].ZipCode);
-      console.log(data[0]);
-      detailInfo.value = data[0];
-    });
+      data[0].City = filterCity(data[0].ZipCode)
+      console.log(data[0])
+      detailInfo.value = data[0]
+    })
 
     return {
       detailInfo,
-    };
-  },
-};
+      isFavorite,
+      clickAddFavorite
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -119,9 +137,9 @@ export default {
 .header {
   @apply grid py-3 grid-cols-3 mx-5;
   grid-template-areas:
-    "title title title"
-    "location location favorite"
-    "desc desc desc";
+    'title title title'
+    'location location favorite'
+    'desc desc desc';
 }
 .header_title {
   grid-area: title;
@@ -186,7 +204,7 @@ export default {
   @apply bg-j-orange;
   position: relative;
   display: inline-block;
-  content: "";
+  content: '';
   left: -20px;
   width: 4px;
   height: 22px;
@@ -209,8 +227,8 @@ export default {
     @apply mx-0 pt-3 pb-10;
     grid-template-columns: auto 1fr 64px;
     grid-template-areas:
-      "title location favorite"
-      "desc desc favorite";
+      'title location favorite'
+      'desc desc favorite';
   }
   .header_title {
     @apply mr-11;
