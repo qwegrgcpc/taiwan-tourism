@@ -6,8 +6,8 @@ import SearchRestaurant from '../views/Search/Restaurant.vue'
 import DetailScenicSpot from '../views/Detail/ScenicSpot.vue'
 import DetailHotel from '../views/Detail/Hotel.vue'
 import DetailRestaurant from '../views/Detail/Restaurant.vue'
-import ItineraryList from '../views/Home.vue'
-import Schedule from '../views/Home.vue'
+import ItineraryList from '../views/ItineraryList.vue'
+import Schedule from '../views/Schedule.vue'
 
 
 const routes = [
