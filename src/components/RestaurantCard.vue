@@ -1,23 +1,26 @@
 <template>
   <div class="main flex w-full">
-    <div class="imgArea"></div>
+    <div
+      class="imgArea"
+      :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
+    ></div>
     <div class="textArea">
-      <h4 class="card_title">時光咖啡</h4>
-      <p class="card_info">
-        蓮池潭，「鳳山八景」之一。荷花滿布潭面，清風吹來夏荷清香。潭畔旁的「龍虎塔」鎮守在此，讓人深感東方神秘色彩的震撼。
+      <h4 class="card_title">{{ cardData.Name }}</h4>
+      <p class="card_info xl:mt-4">
+        {{ cardData.Description }}
       </p>
       <div class="flex mt-3 xl:mt-3">
         <div class="icon">
           <img src="@/assets/images/phone.svg" />
         </div>
-        <span>0915-890673</span>
+        <span>{{ cardData.Phone }}</span>
       </div>
       <div class="card_footer">
         <div>
           <div class="icon">
             <img src="@/assets/images/map.svg" />
           </div>
-          <span>高雄市</span>
+          <span>{{ cardData.City }}</span>
         </div>
         <div>
           <div class="icon cursor-pointer" @click="clickAddFavorite">
@@ -32,6 +35,14 @@
 </template>
 <script>
 export default {
+  props: {
+    cardData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       isFavorite: false,
@@ -82,7 +93,7 @@ export default {
 @screen lg {
   .main {
     height: 207px;
-    @apply mb-6
+    @apply mb-6;
   }
   .imgArea {
     @apply w-1/2;

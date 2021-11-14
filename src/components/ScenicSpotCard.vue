@@ -1,17 +1,20 @@
 <template>
   <div class="main">
-    <div class="imgArea"></div>
+    <div
+      class="imgArea"
+      :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
+    ></div>
     <div class="textArea">
-      <h4 class="card_title">蓮池潭風景區</h4>
+      <h4 class="card_title">{{ cardData.Name }}</h4>
       <p class="card_info">
-        蓮池潭，「鳳山八景」之一。荷花滿布潭面，清風吹來夏荷清香。潭畔旁的「龍虎塔」鎮守在此，讓人深感東方神秘色彩的震撼。
+        {{ cardData.DescriptionDetail }}
       </p>
       <div class="card_footer">
         <div>
           <div class="icon">
             <img src="@/assets/images/map.svg" />
           </div>
-          <span>高雄市</span>
+          <span>{{ cardData.City }}</span>
         </div>
         <div>
           <div class="icon cursor-pointer" @click="clickAddFavorite">
@@ -26,6 +29,14 @@
 </template>
 <script>
 export default {
+  props: {
+    cardData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       isFavorite: false,

@@ -20,18 +20,23 @@
     <div class="contentWrapper">
       <!-- 熱門景點 -->
       <div class="scenicSpotArea w-full overflow-hidden z-10">
-        <p class="title xl:text-center sm:mb-6">
+        <p class="title xl:text-center mb-6">
           熱門景點<span class="hidden lg:inline ml-10"
             >台灣最夯、最美麗的景點都在這裡</span
           >
         </p>
         <div class="cardGroup lg:justify-center">
-          <ScenicSpotCard v-for="i in 3" :key="'ScenicSpotCard' + i" />
+          <ScenicSpotCard
+            v-for="data in defaultData.scenicSpot"
+            :cardData="data"
+            :key="data.ID"
+          />
         </div>
         <div class="more_btn mt-8 mx-auto">更多</div>
       </div>
       <div class="cardBg"></div>
     </div>
+    <!-- 熱門旅宿 -->
     <div class="contentWrapper">
       <div class="hotelArea w-full overflow-hidden">
         <div class="flex items-center mb-5">
@@ -41,10 +46,15 @@
           <div class="more_btn white_btn ml-auto">更多</div>
         </div>
         <div class="cardGroup">
-          <HotelCard v-for="i in 4" :key="'HotelCard' + i" />
+          <HotelCard
+            v-for="data in defaultData.hotel"
+            :cardData="data"
+            :key="data.ID"
+          />
         </div>
       </div>
     </div>
+    <!-- 熱門餐飲 -->
     <div class="contentWrapper">
       <div class="restaurantArea w-full">
         <div class="flex items-center mb-5">
@@ -55,9 +65,9 @@
         </div>
         <div class="restaurantCardGroup">
           <RestaurantCard
-            v-for="i in 4"
-            :key="'RestaurantCard' + i"
-            class="underLine"
+            v-for="data in defaultData.restaurant"
+            :cardData="data"
+            :key="data.ID"
           />
         </div>
       </div>
@@ -70,7 +80,11 @@ import SearchBar from "@/components/SearchBar.vue";
 import ScenicSpotCard from "@/components/ScenicSpotCard.vue";
 import HotelCard from "@/components/HotelCard.vue";
 import RestaurantCard from "@/components/RestaurantCard.vue";
-
+import {
+  fetchScenicSpotAll,
+  fetchRestaurantAll,
+  fetchHotelAll,
+} from "@/apis/tourism";
 export default {
   name: "Home",
   components: {
@@ -78,6 +92,43 @@ export default {
     RestaurantCard,
     HotelCard,
     ScenicSpotCard,
+  },
+  data() {
+    return {
+      defaultData: {
+        scenicSpot: "",
+        hotel: "",
+        restaurant: "",
+      },
+    };
+  },
+  mounted() {
+    this.getDefaultData();
+  },
+  methods: {
+    getDefaultData() {
+      const scenicSpotParams = {
+        $filter: `City eq '南投縣' and Picture/PictureUrl3 ne null`,
+        $top: 3,
+      };
+      fetchScenicSpotAll(scenicSpotParams).then(({ data }) => {
+        this.defaultData.scenicSpot = data;
+      });
+      const hotelParams = {
+        $filter: `City eq '臺北市' and Grade eq '五星級'`,
+        $top: 4,
+      };
+      fetchHotelAll(hotelParams).then(({ data }) => {
+        this.defaultData.hotel = data;
+      });
+      const restaurantParams = {
+        $filter: `City eq '彰化縣' and Picture/PictureUrl3 ne null and WebsiteUrl ne null`,
+        $top: 6,
+      };
+      fetchRestaurantAll(restaurantParams).then(({ data }) => {
+        this.defaultData.restaurant = data;
+      });
+    },
   },
 };
 </script>
@@ -236,8 +287,8 @@ export default {
     @apply rounded-2xl mt-24 max-w-7xl left-1/2 -translate-x-1/2;
   }
 
-  .restaurantCardGroup{
-    @apply w-full flex flex-wrap
+  .restaurantCardGroup {
+    @apply w-full flex flex-wrap;
   }
 
   .restaurantCardGroup > .main {
