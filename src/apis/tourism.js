@@ -47,3 +47,18 @@ export function fetchHotel(city, params) {
     params
   })
 }
+
+export async function fetchAll(params) {
+  const { scenicSpot, restaurant, hotel } = params
+  const result = {}
+  if (scenicSpot) {
+    result.scenicSpot = await fetchScenicSpotAll({ $filter: scenicSpot }).then(({ data }) => data)
+  }
+  if (restaurant) {
+    result.restaurant = await fetchRestaurantAll({ $filter: restaurant }).then(({ data }) => data)
+  }
+  if (hotel) {
+    result.hotel = await fetchHotelAll({ $filter: hotel }).then(({ data }) => data)
+  }
+  return result
+}

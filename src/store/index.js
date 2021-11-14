@@ -4,7 +4,7 @@ export default createStore({
   state: {
     searchData: [],
     favoriteList: getItem('favoriteList') || [],
-    itineraryList: getItem('itineraryList') || [],
+    itineraryList: getItem('itineraryList') || []
   },
   mutations: {
     setSearchData(state, data) {
@@ -18,6 +18,17 @@ export default createStore({
       const list = state.favoriteList.filter((item) => item !== favorite)
       state.favoriteList = list
       setItem('favoriteList', list)
+    },
+    addSchedule(state) {
+      state.itineraryList.push({
+        name: '',
+        schedule: []
+      })
+      setItem('itineraryList', state.itineraryList)
+    },
+    removeSchedule(state, deleteIndex) {
+      const list = state.itineraryList.filter((_, i) => i !== deleteIndex)
+      setItem('itineraryList', list)
     }
   },
   actions: {},
