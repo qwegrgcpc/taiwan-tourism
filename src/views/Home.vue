@@ -20,11 +20,11 @@
     <div class="wrapper">
       <!-- 熱門景點 -->
       <div class="ScenicSpotArea w-full overflow-hidden z-10">
-        <p class="title">熱門景點</p>
+        <p class="title xl:text-center">熱門景點<span class="invisible lg:visible ml-11">台灣最夯、最美麗的景點都在這裡</span></p>
         <div class="cardGroup">
-          <ScenicSpotCard v-for="i in 6" :key="'ScenicSpotCard' + i" />
+          <ScenicSpotCard v-for="i in 3" :key="'ScenicSpotCard' + i" />
         </div>
-        <div class="more_btn mt-11">更多</div>
+        <div class="more_btn mt-8">更多</div>
       </div>
       <div class="cardBg"></div>
     </div>
@@ -57,7 +57,7 @@ export default {
 }
 
 .banner_intro {
-  @apply h-20 p-3 w-full bg-j-black-900 relative transform -translate-y-20 opacity-80;
+  @apply h-20 p-3 bg-j-black-900 relative transform -translate-y-20 opacity-80;
 }
 
 .banner_title {
@@ -107,7 +107,7 @@ export default {
 }
 
 .more_btn {
-  @apply w-20 h-10 mx-auto bg-j-black-900 leading-10 text-white text-xl rounded-3xl text-center;
+  @apply w-20 h-10 mx-auto bg-j-black-900 leading-10 text-white text-xl rounded-3xl text-center cursor-pointer;
 }
 
 @screen lg {
@@ -142,5 +142,33 @@ export default {
     height: 640px;
     @apply mt-10;
   }
+
+  .title {
+    @apply text-4xl;
+  }
+  
+  .title > span{
+    @apply text-lg text-j-black-500 font-medium align-middle leading-5
+  }
+
+  .ScenicSpotArea{
+    @apply px-10 mt-24
+  }
+
+  .ScenicSpotArea > .title::before {
+    content: "";
+    @apply absolute bg-j-orange w-1.5 h-7 transform translate-x-40 translate-y-1;
+  }
+
+  .cardGroup{
+    @apply overflow-hidden flex justify-center
+  }
+
+  .cardBg {
+  height: 320px;
+  @apply rounded-2xl mt-24 max-w-7xl left-1/2 -translate-x-1/2;
+}
+
+
 }
 </style>
