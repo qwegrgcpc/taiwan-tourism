@@ -47,7 +47,7 @@
         </div>
         <div>
           <p>關鍵字</p>
-          <div class="pr-4">
+          <div>
             <input
               v-model="searchParams.keyword"
               type="text"
@@ -154,7 +154,7 @@ export default {
 </script>
 <style scoped>
 .main {
-  @apply bg-white pt-4 pb-6 max-w-full pr-4;
+  @apply bg-white pt-4 pb-6 max-w-full;
 }
 
 .flex > li {
@@ -172,7 +172,7 @@ export default {
 
 .tabArea::after {
   content: "";
-  @apply absolute w-full -left-4 transform -translate-y-0.5 h-0.5 bg-j-black-100 block;
+  @apply absolute w-full -left-2 transform -translate-y-0.5 h-0.5 bg-j-black-100 block;
 }
 
 .bold_text {
@@ -196,11 +196,11 @@ export default {
 }
 
 .searchArea {
-  @apply mt-4 pr-4;
+  @apply mt-4;
 }
 
 .input {
-  @apply rounded-lg max-w-xl h-10 border border-gray-300 py-1 px-3 cursor-pointer items-center w-full;
+  @apply rounded-lg w-full h-10 border border-gray-300 py-1 px-3 cursor-pointer items-center w-full;
 }
 
 .input_text button,
@@ -216,7 +216,7 @@ textarea {
 }
 
 .dropdown_icon {
-  @apply relative transform -translate-x-7 translate-y-4 z-40;
+  @apply absolute right-0 transform -translate-x-4 translate-y-4 z-40;
 }
 
 @screen lg {
@@ -261,7 +261,11 @@ textarea {
   }
 
   .search_btn {
-    @apply w-20;
+    @apply w-20 ml-4;
+  }
+
+  .dropdown_icon{
+    @apply relative -translate-x-6 translate-y-6
   }
 }
 </style>
