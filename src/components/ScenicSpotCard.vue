@@ -2,10 +2,6 @@
   <div class="main">
     <div
       class="imgArea"
-      :style="{
-        backgroundImage:
-          'url(' + require('@/assets/images/photoScenicSpot.jpg') + ')',
-      }"
     ></div>
     <div class="textArea">
       <h4 class="card_title">蓮池潭風景區</h4>
@@ -53,6 +49,7 @@ export default {
 
 .imgArea {
   @apply w-full h-1/2 bg-cover bg-center z-20;
+  background-image: url('~@/assets/images/photoScenicSpot.jpg');
 }
 
 .textArea {
