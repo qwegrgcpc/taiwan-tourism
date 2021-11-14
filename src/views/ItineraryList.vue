@@ -5,7 +5,7 @@
         class="item"
         v-for="(item, i) in list"
         :key="i"
-        @click="$router.push('/Schedule/Modify/test')"
+        @click="$router.push(`/Schedule/Modify/${i}`)"
       >
         <div
           class="absolute top-2 right-2 z-10"
@@ -40,6 +40,7 @@ import empty from "@/assets/images/empty.svg";
 import { ref } from "vue";
 import { computed } from "vue";
 import Dialogs from "@/components/Dialogs.vue";
+import {getItineraryListId} from "@/utils/apiParams"
 
 // import { setItem } from '@/utils/localStorage'
 export default {
@@ -87,22 +88,7 @@ export default {
     const router = useRouter();
     const store = useStore();
     const itineraryList = store.state.itineraryList;
-    const params = itineraryList.reduce(
-      (acc, cur) => {
-        if (cur.schedule.length) {
-          const { id, category } = cur.schedule[0];
-          if (!acc[category]) {
-            acc[category] += `ID eq '${id}'`;
-          }
-          if (acc[category]) {
-            acc[category] += ` or ID eq '${id}'`;
-          }
-        }
-
-        return acc;
-      },
-      { scenicSpot: "", restaurant: "", hotel: "" }
-    );
+    const params = getItineraryListId(itineraryList)
 
     const list = ref([]);
     const showDialogs = ref(false);
