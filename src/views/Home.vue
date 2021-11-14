@@ -1,50 +1,146 @@
 <template>
   <div class="home">
-    <div class="wrapper">
-      <SearchBar class="searchBar" />
-      <div class="img">
-        <img class="bg" :src="require(`@/assets/images/bg.svg`)" />
+    <div class="wrapper justify-end mb-10">
+      <!-- banner背景色塊 -->
+      <div class="bannerBg">
+        <div class="w-1/12 mr-3"></div>
+        <div class="w-2/12 mr-3"></div>
+        <div class="w-3/12"></div>
       </div>
+      <!-- banner(含searchBar) -->
+      <div class="banner">
+        <img src="@/assets/images/photoScenicSpot.jpg" />
+        <div class="banner_intro">
+          <p class="banner_title">景點快搜</p>
+          <p class="banner_subtitle">在頂溪，找到令你怦然心動的風景</p>
+        </div>
+        <SearchBar class="searchBar" />
+      </div>
+    </div>
+    <div class="wrapper">
+      <!-- 熱門景點 -->
+      <div class="ScenicSpotArea w-full overflow-hidden z-10">
+        <p class="title">熱門景點</p>
+        <div class="cardGroup">
+          <ScenicSpotCard v-for="i in 6" :key="'ScenicSpotCard' + i" />
+        </div>
+        <div class="more_btn mt-11">更多</div>
+      </div>
+      <div class="cardBg"></div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import SearchBar from "@/components/SearchBar.vue";
+import ScenicSpotCard from "@/components/ScenicSpotCard.vue";
 
 export default {
   name: "Home",
   components: {
     SearchBar,
+    ScenicSpotCard,
   },
 };
 </script>
 <style scoped>
 .wrapper {
-  @apply flex justify-end mx-auto px-20;
+  @apply flex mx-auto px-4;
 }
 
-.img {
-  /* background-color: blue;  */
-  width: 990px;
-  height: 340px;
-  z-index: 3;
+.banner {
+  @apply w-full z-10;
 }
 
-.bg {
-  /* font-size: 20px; */
-  width: 340px;
-  height: 990px;
-  position: absolute;
-  z-index: 2;
-  @apply text-lg;
+.banner > img {
+  @apply h-60 w-full object-cover;
 }
+
+.banner_intro {
+  @apply h-20 p-3 w-full bg-j-black-900 relative transform -translate-y-20 opacity-80;
+}
+
+.banner_title {
+  @apply text-xl text-white;
+}
+
+.banner_subtitle {
+  @apply text-sm text-white;
+}
+
+.bannerBg {
+  @apply absolute right-0 flex justify-end h-64 w-full;
+}
+
+.bannerBg > div {
+  @apply bg-j-blue-100 h-full;
+}
+
 .searchBar {
-  position: absolute;
-  top: 170px;
-  width: 938px;
-  height: 175px;
-  z-index: 5;
+  @apply relative z-40 text-lg w-full -mt-12;
+}
+
+.title {
+  @apply text-2xl font-bold text-j-black-900 mb-6;
+}
+
+.title::before {
+  content: "";
+  @apply relative inline-block bg-j-orange w-1 h-5 mr-5;
+}
+
+.cardGroup {
+  display: -webkit-box;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  @apply overflow-x-scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.cardGroup::-webkit-scrollbar {
+  display: none;
+}
+
+.cardBg {
+  height: 260px;
+  @apply z-0 absolute bg-j-blue-100 w-full transform -translate-x-4 translate-y-44;
+}
+
+.more_btn {
+  @apply w-20 h-10 mx-auto bg-j-black-900 leading-10 text-white text-xl rounded-3xl text-center;
+}
+
+@screen lg {
+  .wrapper {
+    @apply px-8;
+  }
+
+  .banner > img {
+    height: 640px;
+    @apply w-8/12 ml-auto;
+  }
+
+  .banner_intro {
+    @apply absolute bg-none mt-24 opacity-100 bg-opacity-0;
+    top: 240px;
+  }
+
+  .banner_title {
+    @apply text-4xl font-bold text-j-black-900;
+  }
+
+  .banner_subtitle {
+    @apply text-2xl text-j-black-500;
+  }
+
+  .searchBar {
+    @apply absolute z-40 text-lg mt-24 w-1/2;
+    top: 368px;
+  }
+
+  .bannerBg {
+    height: 640px;
+    @apply mt-10;
+  }
 }
 </style>
