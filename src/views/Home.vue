@@ -17,11 +17,11 @@
         <SearchBar class="searchBar" />
       </div>
     </div>
-    <div class="contenrWrapper">
+    <div class="contentWrapper">
       <!-- 熱門景點 -->
       <div class="scenicSpotArea w-full overflow-hidden z-10">
         <p class="title xl:text-center sm:mb-6">
-          熱門景點<span class="invisible lg:visible ml-10"
+          熱門景點<span class="hidden lg:inline ml-10"
             >台灣最夯、最美麗的景點都在這裡</span
           >
         </p>
@@ -32,18 +32,33 @@
       </div>
       <div class="cardBg"></div>
     </div>
-    <div class="contenrWrapper">
+    <div class="contentWrapper">
       <div class="hotelArea w-full overflow-hidden">
         <div class="flex items-center mb-5">
           <p class="title">
-            熱門旅宿<span class="invisible lg:visible ml-5"
-              >台灣最夯、最美麗的景點都在這裡</span
-            >
+            熱門旅宿<span class="hidden lg:inline ml-5">旅人最常推的</span>
           </p>
           <div class="more_btn white_btn ml-auto">更多</div>
         </div>
         <div class="cardGroup">
           <HotelCard v-for="i in 4" :key="'HotelCard' + i" />
+        </div>
+      </div>
+    </div>
+    <div class="contentWrapper">
+      <div class="restaurantArea w-full">
+        <div class="flex items-center mb-5">
+          <p class="title">
+            熱門餐飲<span class="hidden lg:inline ml-5">饕客必吃美食</span>
+          </p>
+          <div class="more_btn white_btn ml-auto">更多</div>
+        </div>
+        <div class="restaurantCardGroup">
+          <RestaurantCard
+            v-for="i in 4"
+            :key="'RestaurantCard' + i"
+            class="underLine"
+          />
         </div>
       </div>
     </div>
@@ -54,11 +69,13 @@
 import SearchBar from "@/components/SearchBar.vue";
 import ScenicSpotCard from "@/components/ScenicSpotCard.vue";
 import HotelCard from "@/components/HotelCard.vue";
+import RestaurantCard from "@/components/RestaurantCard.vue";
 
 export default {
   name: "Home",
   components: {
     SearchBar,
+    RestaurantCard,
     HotelCard,
     ScenicSpotCard,
   },
@@ -69,7 +86,7 @@ export default {
   @apply flex mx-auto px-4 mb-10;
 }
 
-.contenrWrapper {
+.contentWrapper {
   @apply wrapper;
 }
 
@@ -147,12 +164,20 @@ export default {
   @apply bg-white text-j-black-900 border border-j-black-900;
 }
 
+.underLine {
+  @apply border-b;
+}
+
+.underLine:last-child {
+  @apply border-none;
+}
+
 @screen lg {
   .wrapper {
     @apply px-8;
   }
 
-  .contenrWrapper {
+  .contentWrapper {
     max-width: 1440px;
     @apply px-20;
   }
@@ -209,6 +234,18 @@ export default {
   .cardBg {
     height: 320px;
     @apply rounded-2xl mt-24 max-w-7xl left-1/2 -translate-x-1/2;
+  }
+
+  .restaurantCardGroup{
+    @apply w-full flex flex-wrap
+  }
+
+  .restaurantCardGroup > .main {
+    @apply w-1/2;
+  }
+
+  .underLine {
+    @apply border-none;
   }
 }
 </style>
