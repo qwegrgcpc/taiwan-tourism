@@ -2,10 +2,13 @@
   <div class="main">
     <div class="imgArea"></div>
     <div class="textArea">
-      <h4 class="card_title">蓮池潭風景區</h4>
-      <p class="card_info">
-        蓮池潭，「鳳山八景」之一。荷花滿布潭面，清風吹來夏荷清香。潭畔旁的「龍虎塔」鎮守在此，讓人深感東方神秘色彩的震撼。
-      </p>
+      <h4 class="card_title">鳳山79背包客 眷村親子民宿</h4>
+      <div class="flex mt-4 xl:mt-3">
+        <div class="icon">
+          <img src="@/assets/images/phone.svg" />
+        </div>
+        <span>0915-890673</span>
+      </div>
       <div class="card_footer">
         <div>
           <div class="icon">
@@ -40,18 +43,18 @@ export default {
 </script>
 <style scoped>
 .main {
-  height: 320px;
-  width: 260px;
+  height: 373px;
+  width: 265px;
   @apply rounded-2xl shadow-md overflow-hidden;
 }
 
 .imgArea {
-  @apply w-full h-1/2 bg-cover bg-center z-20;
+  @apply w-full h-3/5 bg-cover bg-center z-20;
   background-image: url("~@/assets/images/photoScenicSpot.jpg");
 }
 
 .textArea {
-  @apply bg-white h-1/2 px-5 py-4 z-20;
+  @apply bg-white h-2/5 px-5 py-4 z-20;
 }
 
 .card_title {
@@ -76,15 +79,18 @@ export default {
 
 @screen lg {
   .main {
-    height: 383px;
-    width: 340px;
+    width: 300px;
   }
-  .card_title {
-    @apply mb-4;
+  .imgArea {
+    @apply h-2/3;
+  }
+
+  .cardArea {
+    @apply h-1/3;
   }
 
   .card_footer {
-    @apply mt-10;
+    @apply mt-3
   }
 
   .card_footer > div:last-child {
