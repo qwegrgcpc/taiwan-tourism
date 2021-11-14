@@ -1,7 +1,7 @@
 <template>
   <nav class="nav" :class="{ active: isSmallerLg && isOpen }">
     <div class="nav_area">
-      <div class="vertical-center">
+      <div class="vertical-center" @click="goTo('/')">
         <img
           class="lg:h-10 h-7"
           src="@/assets/images/logo.svg"
@@ -16,18 +16,21 @@
       <div v-show="showMenuList" class="flex lg:w-auto w-full justify-center">
         <ul class="menu_list">
           <li class="search_btn">
-            <router-link to="/">景點 </router-link>
+            <button @click="goTo('/')">景點 </button>
           </li>
           <li class="search_btn">
-            <router-link to="/">旅宿</router-link>
+            <button @click="goTo('/')">旅宿</button>
           </li>
           <li class="search_btn">
-            <router-link to="/">餐飲</router-link>
+            <button @click="goTo('/')">餐飲</button>
           </li>
           <li class="itinerary_btn">
-            <router-link class="vertical-center" to="/ItineraryList">
+            <button
+              class="vertical-center"
+              @click="goTo('/ItineraryList')"
+            >
               <i><img src="@/assets/images/journey.svg" /></i> 自訂行程
-            </router-link>
+            </button>
           </li>
         </ul>
       </div>
@@ -47,10 +50,16 @@ export default {
       return this.isOpen ? "menuClose" : "menu";
     },
     isSmallerLg() {
-      return this.$breakpoint.isSmaller('lg');
+      return this.$breakpoint.isSmaller("lg");
     },
     showMenuList() {
-      return !this.isSmallerLg || (this.isSmallerLg && this.isOpen) 
+      return !this.isSmallerLg || (this.isSmallerLg && this.isOpen);
+    },
+  },
+  methods: {
+    goTo(path) {
+      this.$router.push(path);
+      this.isOpen = false;
     },
   },
 };

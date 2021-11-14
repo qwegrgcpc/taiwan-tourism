@@ -116,7 +116,6 @@
             <img
               class="w-full h-full object-center object-cover rounded-t-2xl"
               src="https://www.eastcoast-nsa.gov.tw/image/419/640x480"
-              alt=""
             />
           </div>
           <div class="favorite_info">
