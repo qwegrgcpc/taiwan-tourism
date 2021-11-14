@@ -25,7 +25,7 @@
             <router-link to="/">餐飲</router-link>
           </li>
           <li class="itinerary_btn">
-            <router-link class="vertical-center" to="/">
+            <router-link class="vertical-center" to="/ItineraryList">
               <i><img src="@/assets/images/journey.svg" /></i> 自訂行程
             </router-link>
           </li>
@@ -82,7 +82,7 @@ export default {
     @apply px-10 sticky top-0 py-0;
   }
   .nav_area {
-    @apply px-0 h-24;
+    @apply px-0 h-22;
   }
   .menu_list {
     @apply flex lg:flex-row flex-col items-center;

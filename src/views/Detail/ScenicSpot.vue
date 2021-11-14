@@ -218,6 +218,7 @@ export default {
 .info_text {
   @apply text-j-black-900 text-lg font-bold;
 }
+
 @screen lg {
   .wrap {
     @apply items-center mx-auto;
