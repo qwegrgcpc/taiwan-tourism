@@ -3,7 +3,8 @@ import { setItem, getItem } from '@/utils/localStorage'
 export default createStore({
   state: {
     searchData: [],
-    favoriteList: getItem('favoriteList') || []
+    favoriteList: getItem('favoriteList') || [],
+    itineraryList: getItem('itineraryList') || [],
   },
   mutations: {
     setSearchData(state, data) {

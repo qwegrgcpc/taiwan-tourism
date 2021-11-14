@@ -75,6 +75,7 @@ import { fetchScenicSpotAll } from '@/apis/tourism'
 import { ref, computed } from 'vue'
 import { filterCity } from '@/utils/filter'
 import { useStore } from 'vuex'
+import empty from '@/assets/images/empty.svg'
 export default {
   name: 'Detail',
   setup() {
@@ -86,9 +87,9 @@ export default {
       Description: null,
       DescriptionDetail: null,
       Picture: {
-        PictureUrl1: '@/asets/images/empty.svg',
-        PictureUrl2: '@/asets/images/empty.svg',
-        PictureUrl3: '@/asets/images/empty.svg',
+        PictureUrl1: empty,
+        PictureUrl2: empty,
+        PictureUrl3: empty,
         PictureDescription1: null,
         PictureDescription2: null,
         PictureDescription3: null

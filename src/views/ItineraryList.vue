@@ -1,7 +1,12 @@
 <template>
   <div class="wrap">
     <ul class="flex flex-wrap">
-      <li class="item" v-for="i in 5" :key="i" @click="$router.push('/Schedule/test')">
+      <li
+        class="item"
+        v-for="i in 5"
+        :key="i"
+        @click="$router.push('/Schedule/Modify/test')"
+      >
         <div class="m-2.5 aspect-w-3 aspect-h-2">
           <img
             class="w-full h-full object-center object-cover rounded-t-xl"
@@ -21,7 +26,38 @@
 </template>
 
 <script>
-export default {};
+export default {
+  setup() {
+    // const newSchedule = {
+    //   name: "",
+    //   scheduleƒ: [],
+    // };
+    // const data = [
+    //   {
+    //     name: "台中一日遊",
+    //     schedule: [
+    //       {
+    //         day: 1,
+    //         start: [10, 20],
+    //         end: [10, 20],
+    //         id: "123213",
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     name: "台北一日遊",
+    //     schedule: [
+    //       {
+    //         day: 1,
+    //         start: [10, 20],
+    //         end: [10, 20],
+    //         id: "123213",
+    //       },
+    //     ],
+    //   },
+    // ];
+  },
+};
 </script>
 
 <style scoped>

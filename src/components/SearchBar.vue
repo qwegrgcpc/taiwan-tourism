@@ -200,7 +200,7 @@ export default {
 }
 
 .input {
-  @apply rounded-lg w-full h-10 border border-gray-300 py-1 px-3 cursor-pointer items-center w-full;
+  @apply bg-white rounded-lg h-10 border border-gray-300 py-1 px-3 cursor-pointer items-center w-full;
 }
 
 .input_text button,
