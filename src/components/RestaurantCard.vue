@@ -22,8 +22,8 @@
           </div>
           <span>{{ cardData.City }}</span>
         </div>
-        <div>
-          <div class="icon cursor-pointer" @click="clickAddFavorite">
+        <div @click="clickAddFavorite">
+          <div class="icon cursor-pointer">
             <img v-show="isFavorite" src="@/assets/images/addedJourney.svg" />
             <img v-show="!isFavorite" src="@/assets/images/addJourney.svg" />
           </div>
@@ -39,21 +39,37 @@ export default {
     cardData: {
       type: Object,
       default() {
-        return {};
-      },
-    },
+        return {}
+      }
+    }
   },
-  data() {
-    return {
-      isFavorite: false,
-    };
+  computed: {
+    isFavorite: {
+      get() {
+        const { ID } = this.cardData
+        return !!this.$store.state.favoriteList.find(
+          (e) => e.id === ID && e.category === 'restaurant'
+        )
+      },
+      set(isFavorite) {
+        const item = {
+          id: this.cardData.ID,
+          category: 'restaurant'
+        }
+        if (isFavorite) {
+          this.$store.commit('addFavorite', item)
+          return
+        }
+        this.$store.commit('removeFavorite', item)
+      }
+    }
   },
   methods: {
     clickAddFavorite() {
-      this.isFavorite = !this.isFavorite;
-    },
-  },
-};
+      this.isFavorite = !this.isFavorite
+    }
+  }
+}
 </script>
 <style scoped>
 .main {
@@ -63,7 +79,7 @@ export default {
 
 .imgArea {
   @apply rounded-2xl w-1/3 h-full bg-cover bg-center;
-  background-image: url("~@/assets/images/photoRestaurant.jpg");
+  background-image: url('~@/assets/images/photoRestaurant.jpg');
 }
 
 .textArea {
