@@ -11,20 +11,21 @@
         </div>
         <ul class="flex h-10">
           <li class="py-2 pl-5 px-1 text-lg lg:px-2">DAY</li>
-          <li class="page_itme">
-            <button class="page_btn active">1</button>
+          <li
+            v-for="day in scheduleDayItems"
+            :key="day + 'day'"
+            class="page_itme"
+          >
+            <button
+              class="page_btn"
+              :class="{ active: day === currentDay }"
+              @click="changeDay(day)"
+            >
+              {{ day }}
+            </button>
           </li>
-          <li class="page_itme">
-            <button class="page_btn">2</button>
-          </li>
-          <li class="page_itme">
-            <button class="page_btn">2</button>
-          </li>
-          <li class="page_itme">
-            <button class="page_btn">2</button>
-          </li>
-          <li class="page_itme">
-            <button class="page_btn">
+          <li v-show="scheduleDayItems.length < 5" class="page_itme">
+            <button class="page_btn" @click="addScheduleDay">
               <img src="@/assets/images/addDay.svg" />
             </button>
           </li>
@@ -38,43 +39,50 @@
             </div>
           </div>
           <ul class="content">
-            <li v-for="i in 5" :key="i" class="item">
+            <li
+              v-for="item in todayScheduleDetailItems"
+              :key="item.timestamp"
+              class="item"
+            >
               <div class="time_area">
                 <div class="time mb-1">
-                  <input class="input_num" type="number" />
+                  <input
+                    v-model="item.start.h"
+                    class="input_num"
+                    type="number"
+                  />
                   :
-                  <input class="input_num" type="number" />
+                  <input
+                    v-model="item.start.m"
+                    class="input_num"
+                    type="number"
+                  />
                 </div>
                 <div class="time">
-                  <input class="input_num" type="number" />
+                  <input v-model="item.end.h" class="input_num" type="number" />
                   :
-                  <input class="input_num" type="number" />
+                  <input v-model="item.end.m" class="input_num" type="number" />
                 </div>
               </div>
               <div class="info">
-                <div class="absolute top-2 right-2 z-10">
+                <div
+                  class="absolute top-2 right-2 z-10"
+                  @click.stop="removeSchedule(item.timestamp)"
+                >
                   <img class="w-5 h-5" src="@/assets/images/itemClose.svg" />
                 </div>
                 <div class="w-20 h-20">
-                  <img
-                    class="img"
-                    src="https://www.eastcoast-nsa.gov.tw/image/419/640x480"
-                    alt=""
-                  />
+                  <img class="img" :src="item.picture" />
                 </div>
                 <div class="pl-2.5 flex flex-col justify-between">
-                  <div class="text-base font-bold">台北米粉湯</div>
+                  <div class="text-base font-bold">{{ item.name }}</div>
                   <div class="flex text-base font-light">
-                    <img
-                      class="mr-2.5"
-                      src="@/assets/images/phone.svg"
-                    />0912-890673
+                    <img class="mr-2.5" src="@/assets/images/phone.svg" />
+                    {{ item.phone }}
                   </div>
                   <div class="flex text-base font-light">
-                    <img
-                      class="mr-2.5"
-                      src="@/assets/images/map.svg"
-                    />台北市左營區
+                    <img class="mr-2.5" src="@/assets/images/map.svg" />
+                    {{ item.area }}
                   </div>
                 </div>
               </div>
@@ -112,6 +120,7 @@
           v-for="item in favoriteDetailItems"
           :key="item.id"
           class="favorite_card"
+          @click="addScheduleItem(item)"
         >
           <div class="absolute top-2 right-2 z-10">
             <img class="w-6 h-6" src="@/assets/images/itemClose.svg" />
@@ -141,7 +150,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { fetchAll } from '@/apis/tourism'
-import { getListId, getFavoriteItemsId } from '@/utils/apiParams'
+import { getItemsId } from '@/utils/apiParams'
 import { filterArea } from '@/utils/filter'
 import empty from '@/assets/images/empty.svg'
 
@@ -149,13 +158,23 @@ export default {
   setup() {
     const { index } = useRoute().params
     const store = useStore()
-    const scheduleItems = computed(() => store.state.itineraryList[index])
-    const favoriteItems = computed(() => store.state.favoriteList)
-    const scheduleParams = getListId(scheduleItems.value.schedule)
-    const favoriteItemsParams = getFavoriteItemsId(favoriteItems.value)
-    const allParams = mixinParams(scheduleParams, favoriteItemsParams)
     const scheduleDetailItems = ref([])
     const favoriteDetailItems = ref([])
+    const currentDay = ref(1)
+    const scheduleItems = computed(() => store.state.itineraryList[index])
+    const favoriteItems = computed(() => store.state.favoriteList)
+    const scheduleDayItems = ref([
+      ...scheduleItems.value.schedule.reduce(
+        (acc, { day }) => acc.add(day),
+        new Set([1])
+      )
+    ])
+    const todayScheduleDetailItems = computed(() =>
+      scheduleDetailItems.value.filter(({ day }) => day === currentDay.value)
+    )
+    const scheduleParams = getItemsId(scheduleItems.value.schedule)
+    const favoriteItemsParams = getItemsId(favoriteItems.value)
+    const allParams = mixinParams(scheduleParams, favoriteItemsParams)
 
     fetchAll(allParams).then((e) => {
       const result = Object.entries(e).reduce((acc, [category, data]) => {
@@ -164,6 +183,7 @@ export default {
           name: e.Name,
           picture: e.Picture?.PictureUrl1,
           area: filterArea(e.ZipCode),
+          phone: e.Phone,
           category
         }))
         return acc.concat(list)
@@ -173,7 +193,6 @@ export default {
         result
       )
       favoriteDetailItems.value = getFavoriteDetail(favoriteItems.value, result)
-      console.log(favoriteDetailItems.value)
     })
 
     function mixinParams(a, b) {
@@ -186,8 +205,23 @@ export default {
     }
 
     function getScheduleDetail(scheduleItems, detailItems) {
-      console.log(detailItems, scheduleItems)
-      return []
+      return scheduleItems.map(({ id, category, day, start, end }) => {
+        const detail = detailItems.find(
+          (e) => e.id === id && e.category === category
+        )
+
+        return {
+          id,
+          category,
+          day,
+          start,
+          end,
+          picture: detail.picture || empty,
+          area: detail.area,
+          name: detail.name,
+          phone: detail.phone
+        }
+      })
     }
 
     function getFavoriteDetail(favoriteItems, detailItems) {
@@ -201,13 +235,64 @@ export default {
           category,
           picture: detail.picture || empty,
           area: detail.area,
-          name: detail.name
+          name: detail.name,
+          phone: detail.phone
         }
       })
     }
 
+    const addScheduleDay = () => {
+      const items = scheduleDayItems.value
+      const lastDay = items.length + 1
+      if (items.length !== 5) {
+        scheduleDayItems.value = [...items, lastDay]
+        changeDay(lastDay)
+      }
+    }
+
+    const changeDay = (day) => {
+      currentDay.value = day
+    }
+
+    const addScheduleItem = ({ id, category }) => {
+      const detail = favoriteDetailItems.value.find(
+        (e) => e.id === id && e.category === category
+      )
+      const item = {
+        day: currentDay.value,
+        start: { h: '00', m: '00' },
+        end: { h: '00', m: '00' },
+        timestamp: Date.now()
+      }
+      scheduleDetailItems.value.push({
+        ...detail,
+        ...item
+      })
+      store.commit('addScheduleItem', {
+        index,
+        item: {
+          id,
+          category,
+          ...item
+        }
+      })
+    }
+
+    const removeSchedule = (timestamp) => {
+      scheduleDetailItems.value = scheduleDetailItems.value.filter(
+        (e) => e.timestamp !== timestamp
+      )
+    }
+
     return {
-      favoriteDetailItems
+      currentDay,
+      scheduleDayItems,
+      todayScheduleDetailItems,
+      favoriteDetailItems,
+      addScheduleDay,
+      changeDay,
+      addScheduleItem,
+      removeSchedule
     }
   }
 }
