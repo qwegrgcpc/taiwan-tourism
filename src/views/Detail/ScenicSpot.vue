@@ -100,15 +100,21 @@ export default {
     })
 
     const isFavorite = computed(() => {
-      return !!store.state.favoriteList.find((e) => e === id)
+      return !!store.state.favoriteList.find(
+        (e) => e.id === id && e.category === 'scenicSpot'
+      )
     })
 
     const clickAddFavorite = () => {
+      const item = {
+        id,
+        category: 'scenicSpot'
+      }
       if (isFavorite.value) {
-        store.commit('removeFavorite', id)
+        store.commit('removeFavorite', item)
         return
       }
-      store.commit('addFavorite', id)
+      store.commit('addFavorite', item)
     }
 
     fetchScenicSpotAll({
