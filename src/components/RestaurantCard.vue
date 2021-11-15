@@ -1,14 +1,20 @@
 <template>
-  <div class="main">
+  <div class="main flex w-full">
     <div
       class="imgArea"
       :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
     ></div>
     <div class="textArea">
       <h4 class="card_title">{{ cardData.Name }}</h4>
-      <p class="card_info">
-        {{ cardData.DescriptionDetail }}
+      <p class="card_info xl:mt-4">
+        {{ cardData.Description }}
       </p>
+      <div class="flex mt-3 xl:mt-3">
+        <div class="icon">
+          <img src="@/assets/images/phone.svg" />
+        </div>
+        <span>{{ cardData.Phone }}</span>
+      </div>
       <div class="card_footer">
         <div>
           <div class="icon">
@@ -51,22 +57,21 @@ export default {
 </script>
 <style scoped>
 .main {
-  height: 320px;
-  width: 260px;
-  @apply rounded-2xl shadow-md overflow-hidden;
+  height: 176px;
+  @apply overflow-hidden py-2;
 }
 
 .imgArea {
-  @apply w-full h-1/2 bg-cover bg-center z-20;
-  background-image: url("~@/assets/images/photoScenicSpot.jpg");
+  @apply rounded-2xl w-1/3 h-full bg-cover bg-center;
+  background-image: url("~@/assets/images/photoRestaurant.jpg");
 }
 
 .textArea {
-  @apply bg-white h-1/2 px-5 py-4 z-20;
+  @apply bg-white w-2/3 h-full px-3 py-2;
 }
 
 .card_title {
-  @apply text-lg font-bold text-j-black-900 mb-2;
+  @apply text-lg font-bold text-j-black-900 mb-1;
 }
 
 .card_info {
@@ -74,7 +79,7 @@ export default {
 }
 
 .card_footer {
-  @apply flex w-full mt-5;
+  @apply flex w-full mt-1;
 }
 
 .card_footer > div {
@@ -87,19 +92,19 @@ export default {
 
 @screen lg {
   .main {
-    height: 383px;
-    width: 340px;
+    height: 207px;
+    @apply mb-6;
   }
-  .card_title {
-    @apply mb-4;
+  .imgArea {
+    @apply w-1/2;
+  }
+
+  .cardArea {
+    @apply w-1/2;
   }
 
   .card_footer {
-    @apply mt-10;
-  }
-
-  .card_footer > div:last-child {
-    @apply justify-end;
+    @apply mt-3;
   }
 }
 </style>
