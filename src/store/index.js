@@ -17,7 +17,7 @@ export default createStore({
     removeFavorite(state, item) {
       const { id, category } = item
       const list = state.favoriteList.filter(
-        (e) => e.id !== id && e.category !== category
+        (e) => !(e.id === id && e.category === category)
       )
       state.favoriteList = list
       setItem('favoriteList', list)
