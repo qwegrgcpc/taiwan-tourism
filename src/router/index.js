@@ -57,7 +57,7 @@ const routes = [
     component: Schedule
   },
   {
-    path: '/Schedule/Modify/:id',
+    path: '/Schedule/Modify/:index',
     name: 'ScheduleModify',
     component: Schedule
   }
