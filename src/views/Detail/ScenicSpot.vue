@@ -121,7 +121,6 @@ export default {
       $filter: `ID eq '${id}'`
     }).then(({ data }) => {
       data[0].City = filterCity(data[0].ZipCode)
-      console.log(data[0])
       detailInfo.value = data[0]
     })
 

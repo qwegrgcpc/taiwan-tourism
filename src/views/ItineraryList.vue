@@ -37,7 +37,7 @@ import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { ref, computed } from 'vue'
 import { fetchAll } from '@/apis/tourism'
-import { getListId } from '@/utils/apiParams'
+import { getItineraryListId } from '@/utils/apiParams'
 import empty from '@/assets/images/empty.svg'
 import Dialogs from '@/components/Dialogs.vue'
 
@@ -87,7 +87,7 @@ export default {
     const router = useRouter()
     const store = useStore()
     const itineraryList = computed(() => store.state.itineraryList)
-    const params = getListId(itineraryList.value)
+    const params = getItineraryListId(itineraryList.value)
 
     const list = ref([])
     const showDialogs = ref(false)

@@ -1,4 +1,4 @@
-export function getListId(list) {
+export function getItineraryListId(list) {
   return list.reduce(
     (acc, cur) => {
       if (cur.schedule.length) {
@@ -17,7 +17,7 @@ export function getListId(list) {
   )
 }
 
-export function getFavoriteItemsId(list) {
+export function getItemsId(list) {
   return list.reduce(
     (acc, cur) => {
       const { id, category } = cur
