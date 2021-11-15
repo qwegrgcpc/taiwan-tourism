@@ -138,6 +138,7 @@ export default {
     changeTab(tab) {
       this.searchParams.tab = tab;
       this.searchParams.class = "全部";
+      this.$emit("update:tab", tab);
     },
     search() {
       this.loading = true;
@@ -264,8 +265,8 @@ textarea {
     @apply w-20 ml-4;
   }
 
-  .dropdown_icon{
-    @apply relative -translate-x-6 translate-y-6
+  .dropdown_icon {
+    @apply relative -translate-x-6 translate-y-6;
   }
 }
 </style>

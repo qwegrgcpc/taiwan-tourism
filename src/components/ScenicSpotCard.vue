@@ -82,7 +82,7 @@ export default {
 }
 
 .card_title {
-  @apply text-lg font-bold text-j-black-900 mb-2;
+  @apply text-lg font-bold text-j-black-900 mb-2 truncate;
 }
 
 .card_info {

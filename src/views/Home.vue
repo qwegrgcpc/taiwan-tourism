@@ -9,12 +9,20 @@
       </div>
       <!-- banner(含searchBar) -->
       <div class="banner">
-        <img src="@/assets/images/photoScenicSpot.jpg" />
+        <img
+          v-if="searchTab === 'hotel'"
+          src="@/assets/images/photoHotel.jpeg"
+        />
+        <img
+          v-else-if="searchTab === 'restaurant'"
+          src="@/assets/images/photoRestaurant.jpg"
+        />
+        <img v-else src="@/assets/images/photoScenicSpot.jpg" />
         <div class="banner_intro">
-          <p class="banner_title">景點快搜</p>
-          <p class="banner_subtitle">在頂溪，找到令你怦然心動的風景</p>
+          <p class="banner_title">{{ bannerInfo[searchTab].title }}</p>
+          <p class="banner_subtitle">{{ bannerInfo[searchTab].subTitle }}</p>
         </div>
-        <SearchBar class="searchBar" />
+        <SearchBar v-model:tab="searchTab" class="searchBar" />
       </div>
     </div>
     <div class="contentWrapper">
@@ -68,6 +76,7 @@
             v-for="data in defaultData.restaurant"
             :cardData="data"
             :key="data.ID"
+            class="underLine"
           />
         </div>
       </div>
@@ -100,6 +109,21 @@ export default {
         hotel: "",
         restaurant: "",
       },
+      bannerInfo: {
+        scenicSpot: {
+          title: "景點快搜",
+          subTitle: "在頂溪，找到令你怦然心動的風景",
+        },
+        hotel: {
+          title: "住宿推薦",
+          subTitle: "享受一夜好眠，讓出遊心情更加分",
+        },
+        restaurant: {
+          title: "必吃美食",
+          subTitle: "匯聚八方好滋味，滿足每個挑剔的味蕾",
+        },
+      },
+      searchTab: "scenicSpot",
     };
   },
   mounted() {
@@ -107,25 +131,22 @@ export default {
   },
   methods: {
     getDefaultData() {
-      const scenicSpotParams = {
-        $filter: `City eq '南投縣' and Picture/PictureUrl3 ne null`,
+      fetchScenicSpotAll({
+        $filter: `City eq '雲林縣' and Picture/PictureUrl3 ne null`,
         $top: 3,
-      };
-      fetchScenicSpotAll(scenicSpotParams).then(({ data }) => {
+      }).then(({ data }) => {
         this.defaultData.scenicSpot = data;
       });
-      const hotelParams = {
+      fetchHotelAll({
         $filter: `City eq '臺北市' and Grade eq '五星級'`,
         $top: 4,
-      };
-      fetchHotelAll(hotelParams).then(({ data }) => {
+      }).then(({ data }) => {
         this.defaultData.hotel = data;
       });
-      const restaurantParams = {
+      fetchRestaurantAll({
         $filter: `City eq '彰化縣' and Picture/PictureUrl3 ne null and WebsiteUrl ne null`,
         $top: 6,
-      };
-      fetchRestaurantAll(restaurantParams).then(({ data }) => {
+      }).then(({ data }) => {
         this.defaultData.restaurant = data;
       });
     },
@@ -134,7 +155,7 @@ export default {
 </script>
 <style scoped>
 .wrapper {
-  @apply flex mx-auto px-4 mb-10;
+  @apply flex mx-auto px-4 mb-10 lg:px-8;
 }
 
 .contentWrapper {
@@ -146,7 +167,7 @@ export default {
 }
 
 .banner > img {
-  @apply h-60 w-full object-cover;
+  @apply h-60 w-full object-cover lg:w-8/12 lg:ml-auto;
 }
 
 .banner_intro {
@@ -154,15 +175,15 @@ export default {
 }
 
 .banner_title {
-  @apply text-xl text-white;
+  @apply text-xl text-white lg:text-4xl lg:font-bold lg:text-j-black-900;
 }
 
 .banner_subtitle {
-  @apply text-sm text-white;
+  @apply text-sm text-white lg:text-2xl lg:text-j-black-500;
 }
 
 .bannerBg {
-  @apply absolute right-0 flex justify-end h-64 w-full;
+  @apply absolute right-0 flex justify-end h-64 w-full lg:mt-10;
 }
 
 .bannerBg > div {
@@ -174,7 +195,7 @@ export default {
 }
 
 .title {
-  @apply text-2xl font-bold text-j-black-900;
+  @apply text-2xl font-bold text-j-black-900 lg:text-4xl;
 }
 
 .title::before {
@@ -186,7 +207,7 @@ export default {
   display: -webkit-box;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-  @apply overflow-x-scroll;
+  @apply overflow-x-scroll lg:overflow-hidden lg:flex;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -216,7 +237,7 @@ export default {
 }
 
 .underLine {
-  @apply border-b;
+  @apply border-b lg:border-none;
 }
 
 .underLine:last-child {
@@ -224,18 +245,14 @@ export default {
 }
 
 @screen lg {
-  .wrapper {
-    @apply px-8;
-  }
-
   .contentWrapper {
     max-width: 1440px;
     @apply px-20;
   }
 
+  .bannerBg,
   .banner > img {
     height: 640px;
-    @apply w-8/12 ml-auto;
   }
 
   .banner_intro {
@@ -243,26 +260,22 @@ export default {
     top: 240px;
   }
 
-  .banner_title {
-    @apply text-4xl font-bold text-j-black-900;
-  }
-
-  .banner_subtitle {
-    @apply text-2xl text-j-black-500;
-  }
-
   .searchBar {
     @apply absolute z-40 text-lg mt-24 w-1/2;
     top: 368px;
   }
 
-  .bannerBg {
-    height: 640px;
-    @apply mt-10;
+  .lessBanner > .banner > img,
+  .lessBanner > .bannerBg {
+    height: 360px;
   }
 
-  .title {
-    @apply text-4xl;
+  .lessBanner > .banner > .searchBar {
+    @apply mt-0 top-44;
+  }
+
+  .lessBanner > .banner > .banner_intro {
+    @apply invisible;
   }
 
   .title > span {
@@ -278,10 +291,6 @@ export default {
     @apply absolute bg-j-orange w-1.5 h-7 transform translate-x-40 translate-y-1;
   }
 
-  .cardGroup {
-    @apply overflow-hidden flex;
-  }
-
   .cardBg {
     height: 320px;
     @apply rounded-2xl mt-24 max-w-7xl left-1/2 -translate-x-1/2;
@@ -293,10 +302,6 @@ export default {
 
   .restaurantCardGroup > .main {
     @apply w-1/2;
-  }
-
-  .underLine {
-    @apply border-none;
   }
 }
 </style>
