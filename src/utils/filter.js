@@ -8,7 +8,6 @@ export function filterCity(zipCode) {
 }
 
 export function filterArea(zipCode) {
-  console.log(zipCode)
   return cities.reduce((acc, { name, region }) => {
     const zip = region.find(({ code }) => code === +zipCode)?.name
     return zip ? `${name}${zip}` : acc
