@@ -108,21 +108,25 @@
         </div>
       </div>
       <ul class="favorite_cards">
-        <li v-for="i in 30" :key="i" class="favorite_card">
+        <li
+          v-for="item in favoriteDetailItems"
+          :key="item.id"
+          class="favorite_card"
+        >
           <div class="absolute top-2 right-2 z-10">
             <img class="w-6 h-6" src="@/assets/images/itemClose.svg" />
           </div>
           <div class="aspect-w-3 aspect-h-2">
             <img
               class="w-full h-full object-center object-cover rounded-t-2xl"
-              src="https://www.eastcoast-nsa.gov.tw/image/419/640x480"
+              :src="item.picture"
             />
           </div>
           <div class="favorite_info">
-            <div class="favorite_name">台北米粉湯</div>
+            <div class="favorite_name">{{ item.name }}</div>
             <div class="favorite_location">
               <img class="w-4" src="@/assets/images/map.svg" />
-              台北市左營區蓮潭
+              {{ item.area }}
             </div>
           </div>
         </li>
@@ -133,7 +137,80 @@
 </template>
 
 <script>
-export default {};
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { ref, computed } from 'vue'
+import { fetchAll } from '@/apis/tourism'
+import { getListId, getFavoriteItemsId } from '@/utils/apiParams'
+import { filterArea } from '@/utils/filter'
+import empty from '@/assets/images/empty.svg'
+
+export default {
+  setup() {
+    const { index } = useRoute().params
+    const store = useStore()
+    const scheduleItems = computed(() => store.state.itineraryList[index])
+    const favoriteItems = computed(() => store.state.favoriteList)
+    const scheduleParams = getListId(scheduleItems.value.schedule)
+    const favoriteItemsParams = getFavoriteItemsId(favoriteItems.value)
+    const allParams = mixinParams(scheduleParams, favoriteItemsParams)
+    const scheduleDetailItems = ref([])
+    const favoriteDetailItems = ref([])
+
+    fetchAll(allParams).then((e) => {
+      const result = Object.entries(e).reduce((acc, [category, data]) => {
+        const list = data.map((e) => ({
+          id: e.ID,
+          name: e.Name,
+          picture: e.Picture?.PictureUrl1,
+          area: filterArea(e.ZipCode),
+          category
+        }))
+        return acc.concat(list)
+      }, [])
+      scheduleDetailItems.value = getScheduleDetail(
+        scheduleItems.value.schedule,
+        result
+      )
+      favoriteDetailItems.value = getFavoriteDetail(favoriteItems.value, result)
+      console.log(favoriteDetailItems.value)
+    })
+
+    function mixinParams(a, b) {
+      const result = {}
+      const str = (a, b) => (a ? `${a} ${b ? 'or' : b} ${b}` : b)
+      result.scenicSpot = str(a.scenicSpot, b.scenicSpot)
+      result.restaurant = str(a.restaurant, b.restaurant)
+      result.hotel = str(a.hotel, b.hotel)
+      return result
+    }
+
+    function getScheduleDetail(scheduleItems, detailItems) {
+      console.log(detailItems, scheduleItems)
+      return []
+    }
+
+    function getFavoriteDetail(favoriteItems, detailItems) {
+      return favoriteItems.map(({ id, category }) => {
+        const detail = detailItems.find(
+          (e) => e.id === id && e.category === category
+        )
+
+        return {
+          id,
+          category,
+          picture: detail.picture || empty,
+          area: detail.area,
+          name: detail.name
+        }
+      })
+    }
+
+    return {
+      favoriteDetailItems
+    }
+  }
+}
 </script>
 
 <style scoped>
