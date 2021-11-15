@@ -31,6 +31,7 @@ export default createStore({
     },
     removeSchedule(state, deleteIndex) {
       const list = state.itineraryList.filter((_, i) => i !== deleteIndex)
+      state.itineraryList = list
       setItem('itineraryList', list)
     }
   },

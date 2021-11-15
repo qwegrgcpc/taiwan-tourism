@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-import { fetchAll } from "@/apis/tourism";
-import empty from "@/assets/images/empty.svg";
-import { ref } from "vue";
-import { computed } from "vue";
-import Dialogs from "@/components/Dialogs.vue";
-import {getItineraryListId} from "@/utils/apiParams"
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { fetchAll } from '@/apis/tourism'
+import empty from '@/assets/images/empty.svg'
+import { ref } from 'vue'
+import { computed } from 'vue'
+import Dialogs from '@/components/Dialogs.vue'
+import { getItineraryListId } from '@/utils/apiParams'
 
 // import { setItem } from '@/utils/localStorage'
 export default {
@@ -85,74 +85,73 @@ export default {
     //   },
     // ];
     // setItem('itineraryList', data)
-    const router = useRouter();
-    const store = useStore();
-    const itineraryList = store.state.itineraryList;
-    const params = getItineraryListId(itineraryList)
+    const router = useRouter()
+    const store = useStore()
+    const itineraryList = computed(() => store.state.itineraryList)
+    const params = getItineraryListId(itineraryList.value)
 
-    const list = ref([]);
-    const showDialogs = ref(false);
-    const deleteIndex = ref(null);
+    const list = ref([])
+    const showDialogs = ref(false)
+    const deleteIndex = ref(null)
 
     fetchAll(params).then((e) => {
       const result = Object.entries(e).reduce((acc, [category, data]) => {
         const list = data.map((e) => ({
           id: e.ID,
           picture: e.Picture?.PictureUrl1,
-          category,
-        }));
-        return acc.concat(list);
-      }, []);
-      list.value = itineraryList.map(({ name, schedule }) => {
-        let picture = schedule.length ? null : empty;
+          category
+        }))
+        return acc.concat(list)
+      }, [])
+      list.value = itineraryList.value.map(({ name, schedule }) => {
+        let picture = schedule.length ? null : empty
         if (schedule.length) {
-          const { id, category } = schedule[0];
+          const { id, category } = schedule[0]
           picture =
             result.find((e) => e.id === id && e.category === category)
-              ?.picture || empty;
+              ?.picture || empty
         }
 
         return {
           name,
-          picture,
-        };
-      });
-    });
-    const lastScheduleIndex = computed(() => itineraryList.length - 1);
+          picture
+        }
+      })
+    })
+    const lastScheduleIndex = computed(() => itineraryList.value.length - 1)
 
     const addSchedule = () => {
-      const last = itineraryList[lastScheduleIndex.value];
-      if (last.schedule.length) {
-        store.commit("addSchedule");
+      const last = itineraryList.value[lastScheduleIndex.value]
+      if (last?.schedule.length || lastScheduleIndex.value < 0) {
+        store.commit('addSchedule')
       }
-      router.push(`/Schedule/Modify/${lastScheduleIndex.value}`);
-    };
+      router.push(`/Schedule/Modify/${lastScheduleIndex.value}`)
+    }
 
     const setDeleteIndex = (index) => {
-      console.log();
-      deleteIndex.value = index;
-      showDialogs.value = true;
-    };
+      deleteIndex.value = index
+      showDialogs.value = true
+    }
 
     const clickDialogs = (result) => {
-      if (result) deleteSchedule();
-      showDialogs.value = false;
-    };
+      if (result) deleteSchedule()
+      showDialogs.value = false
+    }
 
     const deleteSchedule = () => {
       list.value = list.value.filter((_, i) => i !== deleteIndex.value)
-      store.commit("removeSchedule", deleteIndex.value);
-    };
+      store.commit('removeSchedule', deleteIndex.value)
+    }
 
     return {
       addSchedule,
       setDeleteIndex,
       clickDialogs,
       list,
-      showDialogs,
-    };
-  },
-};
+      showDialogs
+    }
+  }
+}
 </script>
 
 <style scoped>
