@@ -49,25 +49,41 @@
                   <input
                     v-model="item.start.h"
                     class="input_num"
-                    type="number"
+                    type="text"
+                    @keypress="keyLock($event, item.start.h)"
+                    @keyup="updateScheduleItem"
                   />
                   :
                   <input
                     v-model="item.start.m"
                     class="input_num"
-                    type="number"
+                    type="text"
+                    @keypress="keyLock($event, item.start.m)"
+                    @keyup="updateScheduleItem"
                   />
                 </div>
                 <div class="time">
-                  <input v-model="item.end.h" class="input_num" type="number" />
+                  <input
+                    v-model="item.end.h"
+                    class="input_num"
+                    type="text"
+                    @keypress="keyLock($event, item.end.h)"
+                    @keyup="updateScheduleItem"
+                  />
                   :
-                  <input v-model="item.end.m" class="input_num" type="number" />
+                  <input
+                    v-model="item.end.m"
+                    class="input_num"
+                    type="text"
+                    @keypress="keyLock($event, item.end.m)"
+                    @keyup="updateScheduleItem"
+                  />
                 </div>
               </div>
               <div class="info">
                 <div
                   class="absolute top-2 right-2 z-10"
-                  @click.stop="removeSchedule(item.timestamp)"
+                  @click.stop="removeScheduleItem(item.timestamp)"
                 >
                   <img class="w-5 h-5" src="@/assets/images/itemClose.svg" />
                 </div>
@@ -172,6 +188,19 @@ export default {
     const todayScheduleDetailItems = computed(() =>
       scheduleDetailItems.value.filter(({ day }) => day === currentDay.value)
     )
+    const forLocalStorageScheduleItems = computed(() =>
+      scheduleDetailItems.value.map(
+        ({ id, category, timestamp, day, start, end }) => ({
+          id,
+          category,
+          timestamp,
+          day,
+          start,
+          end
+        })
+      )
+    )
+
     const scheduleParams = getItemsId(scheduleItems.value.schedule)
     const favoriteItemsParams = getItemsId(favoriteItems.value)
     const allParams = mixinParams(scheduleParams, favoriteItemsParams)
@@ -205,23 +234,26 @@ export default {
     }
 
     function getScheduleDetail(scheduleItems, detailItems) {
-      return scheduleItems.map(({ id, category, day, start, end }) => {
-        const detail = detailItems.find(
-          (e) => e.id === id && e.category === category
-        )
+      return scheduleItems.map(
+        ({ id, category, day, start, end, timestamp }) => {
+          const detail = detailItems.find(
+            (e) => e.id === id && e.category === category
+          )
 
-        return {
-          id,
-          category,
-          day,
-          start,
-          end,
-          picture: detail.picture || empty,
-          area: detail.area,
-          name: detail.name,
-          phone: detail.phone
+          return {
+            id,
+            category,
+            day,
+            start,
+            end,
+            timestamp,
+            picture: detail.picture || empty,
+            area: detail.area,
+            name: detail.name,
+            phone: detail.phone
+          }
         }
-      })
+      )
     }
 
     function getFavoriteDetail(favoriteItems, detailItems) {
@@ -258,30 +290,42 @@ export default {
       const detail = favoriteDetailItems.value.find(
         (e) => e.id === id && e.category === category
       )
-      const item = {
+
+      scheduleDetailItems.value.push({
+        ...detail,
         day: currentDay.value,
         start: { h: '00', m: '00' },
         end: { h: '00', m: '00' },
         timestamp: Date.now()
-      }
-      scheduleDetailItems.value.push({
-        ...detail,
-        ...item
       })
-      store.commit('addScheduleItem', {
+
+      store.commit('updateSchedule', {
         index,
-        item: {
-          id,
-          category,
-          ...item
-        }
+        item: forLocalStorageScheduleItems
       })
     }
 
-    const removeSchedule = (timestamp) => {
+    const removeScheduleItem = (timestamp) => {
       scheduleDetailItems.value = scheduleDetailItems.value.filter(
         (e) => e.timestamp !== timestamp
       )
+      store.commit('updateSchedule', {
+        index,
+        item: forLocalStorageScheduleItems
+      })
+    }
+
+    const updateScheduleItem = () => {
+      store.commit('updateSchedule', {
+        index,
+        item: forLocalStorageScheduleItems
+      })
+    }
+
+    const keyLock = (event, value) => {
+      if (!(event.keyCode >= 48 && event.keyCode <= 57) || value.length > 1) {
+        event.preventDefault()
+      }
     }
 
     return {
@@ -292,7 +336,9 @@ export default {
       addScheduleDay,
       changeDay,
       addScheduleItem,
-      removeSchedule
+      removeScheduleItem,
+      updateScheduleItem,
+      keyLock
     }
   }
 }

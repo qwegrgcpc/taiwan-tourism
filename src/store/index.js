@@ -29,14 +29,18 @@ export default createStore({
       })
       setItem('itineraryList', state.itineraryList)
     },
-    addScheduleItem(state, { index, item }) {
-      state.itineraryList[index].schedule.push(item)
-      setItem('itineraryList', state.itineraryList)
-    },
     removeSchedule(state, deleteIndex) {
       const list = state.itineraryList.filter((_, i) => i !== deleteIndex)
       state.itineraryList = list
       setItem('itineraryList', list)
+    },
+    updateSchedule(state, { index, item }) {
+      state.itineraryList[index].schedule = item
+      setItem('itineraryList', state.itineraryList)
+    },
+    updateScheduleName(state, { index, name }) {
+      state.itineraryList[index].name = name
+      setItem('itineraryList', state.itineraryList)
     }
   },
   actions: {},
