@@ -4,6 +4,7 @@
       <div class="schedule">
         <div class="schedule_name">
           <input
+            v-model="scheduleName"
             class="w-full h-10 rounded-lg py-2 px-3"
             type="text"
             placeholder="請輸入行程名稱"
@@ -108,7 +109,9 @@
             </li>
           </ul>
           <div class="flex justify-end pb-5 lg:hidden">
-            <button class="back">返回</button>
+            <button class="back" @click="$router.push('/ItineraryList')">
+              返回
+            </button>
           </div>
         </div>
       </div>
@@ -223,7 +226,14 @@ export default {
         })
       )
     )
-
+    const scheduleName = computed({
+      get() {
+        return scheduleItems.value.name
+      },
+      set(name) {
+        store.commit('updateScheduleName', { index, name })
+      }
+    })
     const scheduleParams = getItemsId(scheduleItems.value.schedule)
     const favoriteItemsParams = getItemsId(favoriteItems.value)
     const allParams = mixinParams(scheduleParams, favoriteItemsParams)
@@ -401,6 +411,7 @@ export default {
     }
 
     return {
+      scheduleName,
       currentDay,
       showDialogs,
       scheduleDayItems,
