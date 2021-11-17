@@ -3,7 +3,8 @@ import { setItem, getItem } from '@/utils/localStorage'
 export default createStore({
   state: {
     searchData: [],
-    favoriteList: getItem('favoriteList') || []
+    favoriteList: getItem('favoriteList') || [],
+    itineraryList: getItem('itineraryList') || []
   },
   mutations: {
     setSearchData(state, data) {
@@ -20,6 +21,27 @@ export default createStore({
       )
       state.favoriteList = list
       setItem('favoriteList', list)
+    },
+    addSchedule(state) {
+      state.itineraryList.push({
+        index: Date.now(),
+        name: '',
+        schedule: []
+      })
+      setItem('itineraryList', state.itineraryList)
+    },
+    removeSchedule(state, deleteIndex) {
+      const list = state.itineraryList.filter((e) => e.index !== deleteIndex)
+      state.itineraryList = list
+      setItem('itineraryList', list)
+    },
+    updateSchedule(state, { index, item }) {
+      state.itineraryList.find((item) => item.index === index).schedule = item
+      setItem('itineraryList', state.itineraryList)
+    },
+    updateScheduleName(state, { index, name }) {
+      state.itineraryList.find((item) => item.index === index).name = name
+      setItem('itineraryList', state.itineraryList)
     }
   },
   actions: {},

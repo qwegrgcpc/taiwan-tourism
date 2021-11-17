@@ -75,6 +75,7 @@ import { fetchScenicSpotAll } from '@/apis/tourism'
 import { ref, computed } from 'vue'
 import { filterCity } from '@/utils/filter'
 import { useStore } from 'vuex'
+import empty from '@/assets/images/empty.svg'
 export default {
   name: 'Detail',
   setup() {
@@ -86,9 +87,9 @@ export default {
       Description: null,
       DescriptionDetail: null,
       Picture: {
-        PictureUrl1: '@/asets/images/empty.svg',
-        PictureUrl2: '@/asets/images/empty.svg',
-        PictureUrl3: '@/asets/images/empty.svg',
+        PictureUrl1: empty,
+        PictureUrl2: empty,
+        PictureUrl3: empty,
         PictureDescription1: null,
         PictureDescription2: null,
         PictureDescription3: null
@@ -99,22 +100,27 @@ export default {
     })
 
     const isFavorite = computed(() => {
-      return !!store.state.favoriteList.find((e) => e === id)
+      return !!store.state.favoriteList.find(
+        (e) => e.id === id && e.category === 'scenicSpot'
+      )
     })
 
     const clickAddFavorite = () => {
+      const item = {
+        id,
+        category: 'scenicSpot'
+      }
       if (isFavorite.value) {
-        store.commit('removeFavorite', id)
+        store.commit('removeFavorite', item)
         return
       }
-      store.commit('addFavorite', id)
+      store.commit('addFavorite', item)
     }
 
     fetchScenicSpotAll({
       $filter: `ID eq '${id}'`
     }).then(({ data }) => {
       data[0].City = filterCity(data[0].ZipCode)
-      console.log(data[0])
       detailInfo.value = data[0]
     })
 
@@ -218,6 +224,7 @@ export default {
 .info_text {
   @apply text-j-black-900 text-lg font-bold;
 }
+
 @screen lg {
   .wrap {
     @apply items-center mx-auto;
