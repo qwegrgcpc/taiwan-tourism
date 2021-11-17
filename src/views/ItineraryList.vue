@@ -3,13 +3,13 @@
     <ul class="flex flex-wrap">
       <li
         class="item"
-        v-for="(item, i) in list"
-        :key="i"
-        @click="$router.push(`/Schedule/Modify/${i}`)"
+        v-for="item in list"
+        :key="item.index"
+        @click="$router.push(`/Schedule/Modify/${item.index}`)"
       >
         <div
           class="absolute top-2 right-2 z-10"
-          @click.stop="setDeleteIndex(i)"
+          @click.stop="setDeleteIndex(item.index)"
         >
           <img class="w-6 h-6" src="@/assets/images/itemClose.svg" />
         </div>
@@ -45,45 +45,6 @@ import Dialogs from '@/components/Dialogs.vue'
 export default {
   components: { Dialogs },
   setup() {
-    // const data = [
-    //   {
-    //     name: "台中一日遊",
-    //     schedule: [
-    //       {
-    //         day: 1,
-    //         start: [10, 20],
-    //         end: [10, 20],
-    //         id: "C1_315080500H_000068",
-    //         category: "scenicSpot",
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     name: "台北一日遊",
-    //     schedule: [
-    //       {
-    //         day: 1,
-    //         start: [10, 20],
-    //         end: [10, 20],
-    //         id: "C4_315080000H_000539",
-    //         category: "hotel",
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     name: "高雄一日遊",
-    //     schedule: [
-    //       {
-    //         day: 1,
-    //         start: [10, 20],
-    //         end: [10, 20],
-    //         id: "C3_315081000H_020111",
-    //         category: "restaurant",
-    //       },
-    //     ],
-    //   },
-    // ];
-    // setItem('itineraryList', data)
     const router = useRouter()
     const store = useStore()
     const itineraryList = computed(() => store.state.itineraryList)
@@ -102,7 +63,7 @@ export default {
         }))
         return acc.concat(list)
       }, [])
-      list.value = itineraryList.value.map(({ name, schedule }) => {
+      list.value = itineraryList.value.map(({ name, schedule, index }) => {
         let picture = schedule.length ? null : empty
         if (schedule.length) {
           const { id, category } = schedule[0]
@@ -112,6 +73,7 @@ export default {
         }
 
         return {
+          index,
           name,
           picture
         }
@@ -124,7 +86,8 @@ export default {
       if (last?.schedule.length || lastScheduleIndex.value < 0) {
         store.commit('addSchedule')
       }
-      router.push(`/Schedule/Modify/${lastScheduleIndex.value}`)
+      const { index } = itineraryList.value[lastScheduleIndex.value]
+      router.push(`/Schedule/Modify/${index}`)
     }
 
     const setDeleteIndex = (index) => {
@@ -138,7 +101,7 @@ export default {
     }
 
     const deleteSchedule = () => {
-      list.value = list.value.filter((_, i) => i !== deleteIndex.value)
+      list.value = list.value.filter(({ index }) => index !== deleteIndex.value)
       store.commit('removeSchedule', deleteIndex.value)
     }
 

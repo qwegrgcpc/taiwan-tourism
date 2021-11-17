@@ -187,7 +187,7 @@ export default {
     Dialogs
   },
   setup() {
-    const { index } = useRoute().params
+    const index = +useRoute().params.index
     const store = useStore()
     const showDialogs = ref(false)
     const scheduleDetailItems = ref([])
@@ -198,7 +198,9 @@ export default {
       type: 'todaySchedule',
       params: null
     })
-    const scheduleItems = computed(() => store.state.itineraryList[index])
+    const scheduleItems = computed(() =>
+      store.state.itineraryList.find((item) => item.index === index)
+    )
     const favoriteItems = computed(() => store.state.favoriteList)
     const scheduleDayItems = ref([
       ...scheduleItems.value.schedule.reduce(
@@ -389,7 +391,6 @@ export default {
 
     const clickDialogs = (result) => {
       const { type, params } = dialogsConfig.value
-      console.log(type, params, result)
       if (type === 'todaySchedule' && result) {
         removeTodaySchedule(params)
       }
