@@ -33,7 +33,10 @@
         <div class="items">
           <div class="flex justify-between mb-2">
             <span class="self-end text-base">時間</span>
-            <div class="flex py-5">
+            <div
+              class="flex py-5"
+              @click="openDialogs('todaySchedule', currentDay)"
+            >
               <img class="w-7 mr-3" src="@/assets/images/removeJourney.svg" />
               <span class="text-lg font-light">刪除此日行程</span>
             </div>
@@ -138,7 +141,10 @@
           class="favorite_card"
           @click="addScheduleItem(item)"
         >
-          <div class="absolute top-2 right-2 z-10">
+          <div
+            class="absolute top-2 right-2 z-10"
+            @click.stop="openDialogs('favoriteItem', item)"
+          >
             <img class="w-6 h-6" src="@/assets/images/itemClose.svg" />
           </div>
           <div class="aspect-w-3 aspect-h-2">
@@ -158,6 +164,11 @@
       </ul>
     </div>
     <div class="go_top">TOP</div>
+    <Dialogs
+      v-show="showDialogs"
+      :type="dialogsConfig.str"
+      @result="clickDialogs"
+    />
   </div>
 </template>
 
@@ -168,15 +179,25 @@ import { ref, computed } from 'vue'
 import { fetchAll } from '@/apis/tourism'
 import { getItemsId } from '@/utils/apiParams'
 import { filterArea } from '@/utils/filter'
+import Dialogs from '@/components/Dialogs.vue'
 import empty from '@/assets/images/empty.svg'
 
 export default {
+  components: {
+    Dialogs
+  },
   setup() {
     const { index } = useRoute().params
     const store = useStore()
+    const showDialogs = ref(false)
     const scheduleDetailItems = ref([])
     const favoriteDetailItems = ref([])
     const currentDay = ref(1)
+    const dialogsConfig = ref({
+      str: '日行程',
+      type: 'todaySchedule',
+      params: null
+    })
     const scheduleItems = computed(() => store.state.itineraryList[index])
     const favoriteItems = computed(() => store.state.favoriteList)
     const scheduleDayItems = ref([
@@ -282,6 +303,16 @@ export default {
       }
     }
 
+    const removeTodaySchedule = (currentDay) => {
+      scheduleDetailItems.value = scheduleDetailItems.value.filter(
+        ({ day }) => day !== currentDay
+      )
+      store.commit('updateSchedule', {
+        index,
+        item: forLocalStorageScheduleItems
+      })
+    }
+
     const changeDay = (day) => {
       currentDay.value = day
     }
@@ -322,23 +353,68 @@ export default {
       })
     }
 
+    const removeFavoriteItem = (params) => {
+      const { id, category } = params
+      favoriteDetailItems.value = favoriteDetailItems.value.filter(
+        (e) => !(e.id === id && e.category === category)
+      )
+      store.commit('removeFavorite', { id, category })
+    }
+
     const keyLock = (event, value) => {
       if (!(event.keyCode >= 48 && event.keyCode <= 57) || value.length > 1) {
         event.preventDefault()
       }
     }
 
+    const openDialogs = (type, params) => {
+      let config
+      if (type === 'todaySchedule') {
+        config = {
+          str: '日行程',
+          type: 'todaySchedule',
+          params
+        }
+      }
+      if (type === 'favoriteItem') {
+        config = {
+          str: '項目',
+          type: 'favoriteItem',
+          params
+        }
+      }
+      dialogsConfig.value = config
+      showDialogs.value = true
+    }
+
+    const clickDialogs = (result) => {
+      const { type, params } = dialogsConfig.value
+      console.log(type, params, result)
+      if (type === 'todaySchedule' && result) {
+        removeTodaySchedule(params)
+      }
+      if (type === 'favoriteItem' && result) {
+        removeFavoriteItem(params)
+      }
+      showDialogs.value = false
+    }
+
     return {
       currentDay,
+      showDialogs,
       scheduleDayItems,
       todayScheduleDetailItems,
       favoriteDetailItems,
       addScheduleDay,
+      removeTodaySchedule,
       changeDay,
       addScheduleItem,
       removeScheduleItem,
       updateScheduleItem,
-      keyLock
+      keyLock,
+      clickDialogs,
+      dialogsConfig,
+      openDialogs
     }
   }
 }
