@@ -1,5 +1,8 @@
 <template>
-  <div class="main flex w-full">
+  <div
+    class="main flex w-full"
+    @click="$router.push(`/Detail/Restaurant/${cardData.ID}`)"
+  >
     <div
       class="imgArea"
       :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
@@ -22,7 +25,7 @@
           </div>
           <span>{{ cardData.City }}</span>
         </div>
-        <div @click="clickAddFavorite">
+        <div @click.stop="clickAddFavorite">
           <div class="icon cursor-pointer">
             <img v-show="isFavorite" src="@/assets/images/addedJourney.svg" />
             <img v-show="!isFavorite" src="@/assets/images/addJourney.svg" />

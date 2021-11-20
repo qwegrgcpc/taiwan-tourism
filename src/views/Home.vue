@@ -101,8 +101,6 @@ export default {
   @apply relative z-40 text-lg w-full -mt-12;
 }
 
-
-
 @screen lg {
   .wrapper {
     max-width: 1440px;

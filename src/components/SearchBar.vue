@@ -159,10 +159,15 @@ export default {
       this.loading = true
       this.fetchApi(this.apiParams)
         .then(({ data }) => {
-          this.$store.commit('setSearchData', data)
+          this.$store.commit(
+            'setSearchData',
+            data.filter((_, i) => i < 30)
+          )
         })
         .finally(() => {
+          const { tab } = this.searchParams
           this.loading = false
+          this.$router.push(`/Search/${tab}`)
         })
     }
   }

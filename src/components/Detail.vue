@@ -10,8 +10,10 @@
         <img v-show="!isFavorite" src="@/assets/images/addJourneyBig.svg" />
         加入收藏
       </div>
-      <div class="desc" v-if="info.DescriptionDetail">
-        {{ info.Description }}
+      <div class="desc">
+        <template v-if="info.DescriptionDetail">
+          {{ info.Description }}
+        </template>
       </div>
     </div>
     <div class="images">
@@ -206,7 +208,7 @@ export default {
     max-width: 1280px;
   }
   .header {
-    @apply mx-0 pt-3 pb-10;
+    @apply mx-0 pt-3 pb-10 w-full;
     grid-template-columns: auto 1fr 64px;
     grid-template-areas:
       'title location favorite'
