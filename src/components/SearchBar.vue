@@ -31,7 +31,6 @@
           <p>類別</p>
           <div>
             <select v-model="searchParams.category" class="input">
-              <option value="">請選擇類別</option>
               <option
                 v-for="option in option[searchParams.tab]"
                 :key="option"
@@ -64,94 +63,110 @@
   </div>
 </template>
 <script>
-import { option } from "@/assets/json/options.json";
+import { option } from '@/assets/json/options.json'
 import {
   fetchScenicSpotAll,
   fetchRestaurantAll,
-  fetchHotelAll,
-} from "@/apis/tourism";
+  fetchHotelAll
+} from '@/apis/tourism'
 export default {
   data() {
     return {
       option,
       tabList: [
-        { name: "景點", value: "scenicSpot" },
-        { name: "旅宿", value: "hotel" },
-        { name: "餐飲", value: "restaurant" },
+        { name: '景點', value: 'scenicSpot' },
+        { name: '旅宿', value: 'hotel' },
+        { name: '餐飲', value: 'restaurant' }
       ],
       searchParams: {
-        tab: "scenicSpot",
-        city: "全部",
-        category: "全部",
-        keyword: "",
-      },
-    };
+        tab: 'scenicSpot',
+        city: '全部',
+        category: '全部',
+        keyword: ''
+      }
+    }
   },
   computed: {
     searchData() {
-      return this.$store.state.searchData.filter((_, i) => i < 10);
+      return this.$store.state.searchData.filter((_, i) => i < 10)
     },
     apiParams() {
-      const { city, category, keyword } = this.searchParams;
-      let $filter = "";
-      const addParams = () => ($filter ? " and" : "");
+      const { city, category, keyword } = this.searchParams
+      let $filter = ''
+      const addParams = () => ($filter ? ' and' : '')
 
-      if (city !== "全部") {
-        $filter += `City eq '${city}'`;
+      if (city !== '全部') {
+        $filter += `City eq '${city}'`
       }
 
-      if (category !== "全部") {
-        const ClassEqStr = `Class1 eq '${category}' or Class1 eq '${category}' or Class1 eq '${category}'`;
-        $filter += `${addParams()} (${ClassEqStr})`;
+      if (category !== '全部') {
+        $filter += `${addParams()} (${this.classEqStr})`
       }
 
       if (keyword) {
         const keywordStr = (keyword) =>
-          ` contains(Name,'${keyword}') or contains(Address ,'${keyword}') or contains(DescriptionDetail,'${keyword}') or contains(Description,'${keyword}')`;
+          ` contains(Name,'${keyword}') or contains(Address ,'${keyword}') or contains(Description,'${keyword}')`
         const keywordList = keyword
-          .split(" ")
+          .split(' ')
           .reduce(
             (acc, cur, i, arr) =>
-              (acc += `${keywordStr(cur)} ${i !== arr.length - 1 ? "or" : ""}`),
-            ""
-          );
-        $filter += `${addParams()} (${keywordList})`;
+              (acc += `${keywordStr(cur)} ${i !== arr.length - 1 ? 'or' : ''}`),
+            ''
+          )
+        $filter += `${addParams()} (${keywordList})`
       }
 
-      return $filter ? { $filter } : {};
+      return $filter ? { $filter } : {}
+    },
+    classEqStr() {
+      const { tab, category } = this.searchParams
+      if (tab === 'scenicSpot') {
+        return `Class1 eq '${category}' or Class2 eq '${category}' or Class3 eq '${category}'`
+      }
+      if (tab === 'hotel') {
+        return `Class eq '${category}'`
+      }
+      if (tab === 'restaurant') {
+        return `Class eq '${category}'`
+      }
+      return ''
     },
     fetchApi() {
-      const { tab } = this.searchParams;
-      if (tab === "scenicSpot") {
-        return fetchScenicSpotAll;
+      const { tab } = this.searchParams
+      if (tab === 'scenicSpot') {
+        return fetchScenicSpotAll
       }
-      if (tab === "hotel") {
-        return fetchRestaurantAll;
+      if (tab === 'hotel') {
+        return fetchRestaurantAll
       }
-      if (tab === "restaurant") {
-        return fetchHotelAll;
+      if (tab === 'restaurant') {
+        return fetchHotelAll
       }
-      return () => {};
-    },
+      return () => {}
+    }
   },
   methods: {
     changeTab(tab) {
-      this.searchParams.tab = tab;
-      this.searchParams.class = "全部";
-      this.$emit("update:tab", tab);
+      this.searchParams = {
+        tab,
+        city: '全部',
+        category: '全部',
+        keyword: ''
+      }
+      this.$emit('update:tab', tab)
     },
     search() {
-      this.loading = true;
+      this.loading = true
       this.fetchApi(this.apiParams)
         .then(({ data }) => {
-          this.$store.commit("setSearchData", data);
+          this.$store.commit('setSearchData', data)
         })
         .finally(() => {
-          this.loading = false;
-        });
-    },
-  },
-};
+          this.loading = false
+        })
+    }
+  }
+}
 </script>
 <style scoped>
 .main {
@@ -172,7 +187,7 @@ export default {
 }
 
 .tabArea::after {
-  content: "";
+  content: '';
   @apply absolute w-full -left-2 transform -translate-y-0.5 h-0.5 bg-j-black-100 block;
 }
 
