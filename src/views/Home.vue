@@ -9,15 +9,7 @@
       </div>
       <!-- banner(含searchBar) -->
       <div class="banner">
-        <img
-          v-if="searchTab === 'hotel'"
-          src="@/assets/images/photoHotel.jpeg"
-        />
-        <img
-          v-else-if="searchTab === 'restaurant'"
-          src="@/assets/images/photoRestaurant.jpg"
-        />
-        <img v-else src="@/assets/images/photoScenicSpot.jpg" />
+        <img :src="bannerImg" />
         <div class="banner_intro">
           <p class="banner_title">{{ bannerInfo[searchTab].title }}</p>
           <p class="banner_subtitle">{{ bannerInfo[searchTab].subTitle }}</p>
@@ -85,77 +77,91 @@
 </template>
 
 <script>
-import SearchBar from "@/components/SearchBar.vue";
-import ScenicSpotCard from "@/components/ScenicSpotCard.vue";
-import HotelCard from "@/components/HotelCard.vue";
-import RestaurantCard from "@/components/RestaurantCard.vue";
+import SearchBar from '@/components/SearchBar.vue'
+import ScenicSpotCard from '@/components/ScenicSpotCard.vue'
+import HotelCard from '@/components/HotelCard.vue'
+import RestaurantCard from '@/components/RestaurantCard.vue'
 import {
   fetchScenicSpotAll,
   fetchRestaurantAll,
-  fetchHotelAll,
-} from "@/apis/tourism";
+  fetchHotelAll
+} from '@/apis/tourism'
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     SearchBar,
     RestaurantCard,
     HotelCard,
-    ScenicSpotCard,
+    ScenicSpotCard
   },
   data() {
     return {
       defaultData: {
-        scenicSpot: "",
-        hotel: "",
-        restaurant: "",
+        scenicSpot: '',
+        hotel: '',
+        restaurant: ''
       },
       bannerInfo: {
         scenicSpot: {
-          title: "景點快搜",
-          subTitle: "在頂溪，找到令你怦然心動的風景",
+          title: '景點快搜',
+          subTitle: '在頂溪，找到令你怦然心動的風景'
         },
         hotel: {
-          title: "住宿推薦",
-          subTitle: "享受一夜好眠，讓出遊心情更加分",
+          title: '住宿推薦',
+          subTitle: '享受一夜好眠，讓出遊心情更加分'
         },
         restaurant: {
-          title: "必吃美食",
-          subTitle: "匯聚八方好滋味，滿足每個挑剔的味蕾",
-        },
+          title: '必吃美食',
+          subTitle: '匯聚八方好滋味，滿足每個挑剔的味蕾'
+        }
       },
-      searchTab: "scenicSpot",
-    };
+      searchTab: 'scenicSpot'
+    }
+  },
+  computed: {
+    bannerImg() {
+      if (this.searchTab === 'scenicSpot') {
+        return require('@/assets/images/photoScenicSpot.jpg')
+      }
+      if (this.searchTab === 'hotel') {
+        return require('@/assets/images/photoHotel.jpeg')
+      }
+      if (this.searchTab === 'restaurant') {
+        return require('@/assets/images/photoRestaurant.jpg')
+      }
+      return require('@/assets/images/empty.svg')
+    }
   },
   mounted() {
-    this.getDefaultData();
+    this.getDefaultData()
   },
   methods: {
     getDefaultData() {
       fetchScenicSpotAll({
         $filter: `City eq '雲林縣' and Picture/PictureUrl3 ne null`,
-        $top: 3,
+        $top: 3
       }).then(({ data }) => {
-        this.defaultData.scenicSpot = data;
-      });
+        this.defaultData.scenicSpot = data
+      })
       fetchHotelAll({
         $filter: `City eq '臺北市' and Grade eq '五星級'`,
-        $top: 4,
+        $top: 4
       }).then(({ data }) => {
-        this.defaultData.hotel = data;
-      });
+        this.defaultData.hotel = data
+      })
       fetchRestaurantAll({
         $filter: `City eq '彰化縣' and Picture/PictureUrl3 ne null and WebsiteUrl ne null`,
-        $top: 6,
+        $top: 6
       }).then(({ data }) => {
-        this.defaultData.restaurant = data;
-      });
-    },
-  },
-};
+        this.defaultData.restaurant = data
+      })
+    }
+  }
+}
 </script>
 <style scoped>
 .wrapper {
-  @apply flex mx-auto px-4 mb-10 lg:px-8;
+  @apply flex mx-auto px-4 mb-10 lg:px-8 relative;
 }
 
 .contentWrapper {
@@ -199,7 +205,7 @@ export default {
 }
 
 .title::before {
-  content: "";
+  content: '';
   @apply relative inline-block bg-j-orange w-1 h-5 mr-5;
 }
 
@@ -245,9 +251,16 @@ export default {
 }
 
 @screen lg {
+  .wrapper {
+    max-width: 1440px;
+  }
   .contentWrapper {
     max-width: 1440px;
     @apply px-20;
+  }
+
+  .bannerBg {
+    max-width: 1440px;
   }
 
   .bannerBg,
@@ -265,7 +278,7 @@ export default {
     top: 368px;
   }
 
-  .lessBanner > .banner > img,
+  /* .lessBanner > .banner > img,
   .lessBanner > .bannerBg {
     height: 360px;
   }
@@ -276,7 +289,7 @@ export default {
 
   .lessBanner > .banner > .banner_intro {
     @apply invisible;
-  }
+  } */
 
   .title > span {
     @apply text-lg text-j-black-500 font-medium align-middle leading-5;
@@ -287,7 +300,7 @@ export default {
   }
 
   .scenicSpotArea > .title::before {
-    content: "";
+    content: '';
     @apply absolute bg-j-orange w-1.5 h-7 transform translate-x-40 translate-y-1;
   }
 
