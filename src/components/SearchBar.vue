@@ -116,7 +116,7 @@ export default {
         $filter += `${addParams()} (${keywordList})`
       }
 
-      return $filter ? { $filter } : {}
+      return $filter ? { $filter, $top: 30 } : { $top: 30 }
     },
     classEqStr() {
       const { tab, category } = this.searchParams
