@@ -137,10 +137,10 @@ export default {
         return fetchScenicSpotAll
       }
       if (tab === 'hotel') {
-        return fetchRestaurantAll
+        return fetchHotelAll
       }
       if (tab === 'restaurant') {
-        return fetchHotelAll
+        return fetchRestaurantAll
       }
       return () => {}
     }
