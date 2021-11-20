@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import SearchIndex from '../views/Search/index.vue'
 import SearchScenicSpot from '../views/Search/ScenicSpot.vue'
 import SearchHotel from '../views/Search/Hotel.vue'
 import SearchRestaurant from '../views/Search/Restaurant.vue'
@@ -9,27 +10,33 @@ import DetailRestaurant from '../views/Detail/Restaurant.vue'
 import ItineraryList from '../views/ItineraryList.vue'
 import Schedule from '../views/Schedule/Modify.vue'
 
-
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
-  },
-  {
-    path: '/Search/ScenicSpot',
-    name: 'SearchScenicSpot',
-    component: SearchScenicSpot
-  },
-  {
-    path: '/Search/Hotel',
-    name: 'SearchHotel',
-    component: SearchHotel
-  },
-  {
-    path: '/Search/Restaurant',
-    name: 'SearchRestaurant',
-    component: SearchRestaurant
+    component: Home,
+    children: [
+      {
+        path: '',
+        name: 'SearchIndex',
+        component: SearchIndex
+      },
+      {
+        path: 'Search/ScenicSpot',
+        name: 'SearchScenicSpot',
+        component: SearchScenicSpot
+      },
+      {
+        path: 'Search/Hotel',
+        name: 'SearchHotel',
+        component: SearchHotel
+      },
+      {
+        path: 'Search/Restaurant',
+        name: 'SearchRestaurant',
+        component: SearchRestaurant
+      }
+    ]
   },
   {
     path: '/Detail/ScenicSpot/:id',

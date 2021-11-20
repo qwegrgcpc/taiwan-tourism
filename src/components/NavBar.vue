@@ -16,13 +16,13 @@
       <div v-show="showMenuList" class="flex lg:w-auto w-full justify-center">
         <ul class="menu_list">
           <li class="search_btn">
-            <button @click="goTo('/')">景點 </button>
+            <button @click="goTo('/Search/ScenicSpot')">景點 </button>
           </li>
           <li class="search_btn">
-            <button @click="goTo('/')">旅宿</button>
+            <button @click="goTo('/Search/Hotel')">旅宿</button>
           </li>
           <li class="search_btn">
-            <button @click="goTo('/')">餐飲</button>
+            <button @click="goTo('/Search/Restaurant')">餐飲</button>
           </li>
           <li class="itinerary_btn">
             <button
