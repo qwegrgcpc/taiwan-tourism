@@ -3,10 +3,7 @@
     class="main flex w-full"
     @click="$router.push(`/Detail/Restaurant/${cardData.ID}`)"
   >
-    <div
-      class="imgArea"
-      :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
-    ></div>
+    <div class="imgArea" v-bg-src="cardData.Picture.PictureUrl1"></div>
     <div class="textArea">
       <h4 class="card_title">{{ cardData.Name }}</h4>
       <p class="card_info xl:mt-4">

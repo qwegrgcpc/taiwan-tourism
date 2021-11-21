@@ -20,28 +20,28 @@
       <div class="main_img">
         <img
           class="img"
-          :src="info.Picture.PictureUrl1"
+          v-src="info.Picture.PictureUrl1"
           :alt="info.Picture.PictureDescription1"
         />
       </div>
       <div class="side_img">
         <img
           class="img"
-          :src="info.Picture.PictureUrl1"
+          v-src="info.Picture.PictureUrl1"
           :alt="info.Picture.PictureDescription1"
         />
       </div>
       <div class="side_img">
         <img
           class="img"
-          :src="info.Picture.PictureUrl2"
+          v-src="info.Picture.PictureUrl2"
           :alt="info.Picture.PictureDescription1"
         />
       </div>
       <div class="side_img">
         <img
           class="img"
-          :src="info.Picture.PictureUrl3"
+          v-src="info.Picture.PictureUrl3"
           :alt="info.Picture.PictureDescription1"
         />
       </div>

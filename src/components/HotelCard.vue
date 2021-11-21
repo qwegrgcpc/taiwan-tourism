@@ -2,7 +2,7 @@
   <div class="main" @click="$router.push(`/Detail/Hotel/${cardData.ID}`)">
     <div
       class="imgArea"
-      :style="{ backgroundImage: 'url(' + cardData.Picture.PictureUrl1 + ')' }"
+      v-bg-src="cardData.Picture.PictureUrl1"
     ></div>
     <div class="textArea">
       <h4 class="card_title">{{ cardData.Name }}</h4>

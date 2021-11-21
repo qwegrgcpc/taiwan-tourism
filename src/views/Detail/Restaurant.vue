@@ -15,7 +15,6 @@ import { useRoute } from 'vue-router'
 import { fetchRestaurantAll } from '@/apis/tourism'
 import { ref } from 'vue'
 import { filterCity } from '@/utils/filter'
-import empty from '@/assets/images/empty.svg'
 export default {
   name: 'DetailScenicSpot',
   components: {
@@ -29,9 +28,9 @@ export default {
       Description: null,
       DescriptionDetail: null,
       Picture: {
-        PictureUrl1: empty,
-        PictureUrl2: empty,
-        PictureUrl3: empty,
+        PictureUrl1: null,
+        PictureUrl2: null,
+        PictureUrl3: null,
         PictureDescription1: null,
         PictureDescription2: null,
         PictureDescription3: null
