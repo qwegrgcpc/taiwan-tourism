@@ -166,7 +166,6 @@ export default {
               e.City = e.City || filterCity(e.ZipCode) || e.Address.slice(0, 3)
               return e
             })
-          console.log(items)
           this.$store.commit('setSearchData', items)
         })
         .finally(() => {
