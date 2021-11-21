@@ -4,7 +4,7 @@
       <div class="flex items-center mb-5">
         <p class="title">
           熱門旅宿
-          <span class="hidden lg:inline ml-5">旅人最常推的</span>
+          <span class="subtitle hidden lg:inline ml-5">旅人最常推的</span>
         </p>
       </div>
       <div class="cardGroup">
@@ -55,15 +55,8 @@ export default {
     max-width: 1440px;
     @apply px-20;
   }
-  .scenicSpotArea > .title::before {
-    content: '';
-    @apply absolute bg-j-orange w-1.5 h-7 transform translate-x-40 translate-y-1;
-  }
   .subtitle {
     @apply text-lg text-j-black-500 font-medium align-middle leading-5 inline;
-  }
-  .scenicSpotArea {
-    @apply px-10 mt-24;
   }
   .cardGroup {
     @apply flex flex-wrap;

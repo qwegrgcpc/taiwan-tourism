@@ -72,7 +72,7 @@ export default {
 .main {
   height: 373px;
   width: 265px;
-  @apply rounded-2xl shadow-md overflow-hidden;
+  @apply rounded-2xl overflow-hidden border border-j-black-100;
 }
 
 .imgArea {
