@@ -2,9 +2,9 @@ import { cities } from '@/assets/json/taiwan-zip-code.json'
 
 export function filterCity(zipCode) {
   if (zipCode) {
-    const { name } = cities.find(({ region }) =>
+    const name = cities.find(({ region }) =>
       region.find(({ code }) => code === +zipCode)
-    )
+    )?.name
     return name
   }
   return ''

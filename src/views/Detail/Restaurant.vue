@@ -44,7 +44,10 @@ export default {
       $filter: `ID eq '${id}'`
     }).then(({ data }) => {
       if (data.length) {
-        data[0].City = filterCity(data[0].ZipCode)
+        data[0].City =
+          data[0].City ||
+          filterCity(data[0].ZipCode) ||
+          data[0].Address.slice(0, 3)
         detailInfo.value = data[0]
       }
     })

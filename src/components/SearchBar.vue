@@ -69,6 +69,7 @@ import {
   fetchRestaurantAll,
   fetchHotelAll
 } from '@/apis/tourism'
+import { filterCity } from '@/utils/filter'
 export default {
   data() {
     return {
@@ -159,10 +160,14 @@ export default {
       this.loading = true
       this.fetchApi(this.apiParams)
         .then(({ data }) => {
-          this.$store.commit(
-            'setSearchData',
-            data.filter((_, i) => i < 30)
-          )
+          const items = data
+            .filter((_, i) => i < 30)
+            .map((e) => {
+              e.City = e.City || filterCity(e.ZipCode) || e.Address.slice(0, 3)
+              return e
+            })
+          console.log(items)
+          this.$store.commit('setSearchData', items)
         })
         .finally(() => {
           const { tab } = this.searchParams
