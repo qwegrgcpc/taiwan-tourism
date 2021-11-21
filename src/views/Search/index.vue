@@ -16,7 +16,9 @@
             :key="data.ID"
           />
         </div>
-        <div class="more_btn mt-8 mx-auto">更多</div>
+        <div class="more_btn mt-8 mx-auto" @click="goTo('ScenicSpot')">
+          更多
+        </div>
       </div>
       <div class="cardBg"></div>
     </div>
@@ -28,7 +30,9 @@
             熱門旅宿
             <span class="hidden lg:inline ml-5">旅人最常推的</span>
           </p>
-          <div class="more_btn white_btn ml-auto">更多</div>
+          <div class="more_btn white_btn ml-auto" @click="goTo('Hotel')">
+            更多
+          </div>
         </div>
         <div class="cardGroup">
           <HotelCard
@@ -46,7 +50,9 @@
           <p class="title">
             熱門餐飲<span class="hidden lg:inline ml-5">饕客必吃美食</span>
           </p>
-          <div class="more_btn white_btn ml-auto">更多</div>
+          <div class="more_btn white_btn ml-auto" @click="goTo('Restaurant')">
+            更多
+          </div>
         </div>
         <div class="restaurantCardGroup">
           <RestaurantCard
@@ -61,56 +67,59 @@
   </div>
 </template>
 <script>
-import ScenicSpotCard from '@/components/ScenicSpotCard.vue'
-import HotelCard from '@/components/HotelCard.vue'
-import RestaurantCard from '@/components/RestaurantCard.vue'
+import ScenicSpotCard from "@/components/ScenicSpotCard.vue";
+import HotelCard from "@/components/HotelCard.vue";
+import RestaurantCard from "@/components/RestaurantCard.vue";
 import {
   fetchScenicSpotAll,
   fetchRestaurantAll,
-  fetchHotelAll
-} from '@/apis/tourism'
+  fetchHotelAll,
+} from "@/apis/tourism";
 export default {
-  name: 'SearchIndex',
+  name: "SearchIndex",
   components: {
     RestaurantCard,
     HotelCard,
-    ScenicSpotCard
+    ScenicSpotCard,
   },
   data() {
     return {
       defaultData: {
-        scenicSpot: '',
-        hotel: '',
-        restaurant: ''
-      }
-    }
+        scenicSpot: "",
+        hotel: "",
+        restaurant: "",
+      },
+    };
   },
   mounted() {
-    this.getDefaultData()
+    this.getDefaultData();
   },
   methods: {
     getDefaultData() {
       fetchScenicSpotAll({
         $filter: `City eq '雲林縣' and Picture/PictureUrl3 ne null`,
-        $top: 3
+        $top: 3,
       }).then(({ data }) => {
-        this.defaultData.scenicSpot = data
-      })
+        this.defaultData.scenicSpot = data;
+      });
       fetchHotelAll({
         $filter: `City eq '臺北市' and Grade eq '五星級'`,
-        $top: 4
+        $top: 4,
       }).then(({ data }) => {
-        this.defaultData.hotel = data
-      })
+        this.defaultData.hotel = data;
+      });
       fetchRestaurantAll({
         $filter: `City eq '彰化縣' and Picture/PictureUrl3 ne null and WebsiteUrl ne null`,
-        $top: 6
+        $top: 6,
       }).then(({ data }) => {
-        this.defaultData.restaurant = data
-      })
-    }
-  }
-}
+        this.defaultData.restaurant = data;
+      });
+    },
+    goTo(path) {
+      this.$router.push(`/search/${path}`);
+    },
+  },
+};
 </script>
 <style scoped>
 .contentWrapper {
@@ -121,7 +130,7 @@ export default {
 }
 
 .title::before {
-  content: '';
+  content: "";
   @apply relative inline-block bg-j-orange w-1 h-5 mr-5;
 }
 
@@ -181,7 +190,7 @@ export default {
   }
 
   .scenicSpotArea > .title::before {
-    content: '';
+    content: "";
     @apply absolute bg-j-orange w-1.5 h-7 transform translate-x-40 translate-y-1;
   }
 

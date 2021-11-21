@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="wrapper justify-end">
+    <div class="wrapper justify-end" :class="{ lessBanner: searchData.length }">
       <!-- banner背景色塊 -->
       <div class="bannerBg">
         <div class="w-1/12 mr-3"></div>
@@ -22,47 +22,50 @@
 </template>
 
 <script>
-import SearchBar from '@/components/SearchBar.vue'
+import SearchBar from "@/components/SearchBar.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    SearchBar
+    SearchBar,
   },
   data() {
     return {
       bannerInfo: {
         scenicSpot: {
-          title: '景點快搜',
-          subTitle: '在頂溪，找到令你怦然心動的風景'
+          title: "景點快搜",
+          subTitle: "在頂溪，找到令你怦然心動的風景",
         },
         hotel: {
-          title: '住宿推薦',
-          subTitle: '享受一夜好眠，讓出遊心情更加分'
+          title: "住宿推薦",
+          subTitle: "享受一夜好眠，讓出遊心情更加分",
         },
         restaurant: {
-          title: '必吃美食',
-          subTitle: '匯聚八方好滋味，滿足每個挑剔的味蕾'
-        }
+          title: "必吃美食",
+          subTitle: "匯聚八方好滋味，滿足每個挑剔的味蕾",
+        },
       },
-      searchTab: 'scenicSpot'
-    }
+      searchTab: "scenicSpot",
+    };
   },
   computed: {
     bannerImg() {
-      if (this.searchTab === 'scenicSpot') {
-        return require('@/assets/images/photoScenicSpot.jpg')
+      if (this.searchTab === "scenicSpot") {
+        return require("@/assets/images/photoScenicSpot.jpg");
       }
-      if (this.searchTab === 'hotel') {
-        return require('@/assets/images/photoHotel.jpeg')
+      if (this.searchTab === "hotel") {
+        return require("@/assets/images/photoHotel.jpeg");
       }
-      if (this.searchTab === 'restaurant') {
-        return require('@/assets/images/photoRestaurant.jpg')
+      if (this.searchTab === "restaurant") {
+        return require("@/assets/images/photoRestaurant.jpg");
       }
-      return require('@/assets/images/empty.svg')
-    }
-  }
-}
+      return require("@/assets/images/empty.svg");
+    },
+    searchData() {
+      return this.$store.state.searchData;
+    },
+  },
+};
 </script>
 <style scoped>
 .wrapper {
@@ -105,7 +108,6 @@ export default {
   .wrapper {
     max-width: 1440px;
   }
-  
 
   .bannerBg {
     max-width: 1440px;
@@ -117,13 +119,26 @@ export default {
   }
 
   .banner_intro {
-    @apply absolute bg-none mt-24 opacity-100 bg-opacity-0;
+    @apply absolute bg-none opacity-100 bg-opacity-0;
     top: 240px;
   }
 
   .searchBar {
-    @apply absolute z-40 text-lg mt-24 w-1/2;
-    top: 368px;
+    @apply absolute z-40 text-lg w-1/2;
+    top: 460px;
+  }
+
+  .lessBanner > .banner > img,
+  .lessBanner > .bannerBg {
+    height: 360px;
+  }
+
+  .lessBanner > .banner > .searchBar {
+    @apply mt-0 top-22;
+  }
+
+  .lessBanner > .banner > .banner_intro {
+    @apply invisible;
   }
 }
 </style>
