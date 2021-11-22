@@ -319,10 +319,7 @@ export default {
       scheduleDetailItems.value = scheduleDetailItems.value.filter(
         ({ day }) => day !== currentDay
       )
-      store.commit('updateSchedule', {
-        index,
-        item: forLocalStorageScheduleItems
-      })
+      updateScheduleItem()
     }
 
     const changeDay = (day) => {
@@ -342,20 +339,14 @@ export default {
         timestamp: Date.now()
       })
 
-      store.commit('updateSchedule', {
-        index,
-        item: forLocalStorageScheduleItems
-      })
+      updateScheduleItem()
     }
 
     const removeScheduleItem = (timestamp) => {
       scheduleDetailItems.value = scheduleDetailItems.value.filter(
         (e) => e.timestamp !== timestamp
       )
-      store.commit('updateSchedule', {
-        index,
-        item: forLocalStorageScheduleItems
-      })
+      updateScheduleItem()
     }
 
     const updateScheduleItem = () => {
