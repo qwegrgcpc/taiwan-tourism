@@ -47,28 +47,32 @@
       </div>
     </div>
     <div class="intro">
-      <div class="content">
-        <div class="content_title">{{ categoryStr }}介紹</div>
-        <div class="content_subtitle">
-          {{ info.Picture.PictureDescription1 }}
-        </div>
-        <div class="content_desc">
-          {{ info.DescriptionDetail || info.Description }}
+      <div class="lg:col-span-8">
+        <div class="content">
+          <div class="content_title">{{ categoryStr }}介紹</div>
+          <div class="content_subtitle">
+            {{ info.Picture.PictureDescription1 }}
+          </div>
+          <div class="content_desc">
+            {{ info.DescriptionDetail || info.Description }}
+          </div>
         </div>
       </div>
-      <div class="info">
-        <div class="info_title">{{ categoryStr }}資訊</div>
-        <div class="info_item">
-          <div class="info_label">開放時間</div>
-          <div class="info_text">{{ info.OpenTime }}</div>
-        </div>
-        <div class="info_item">
-          <div class="info_label">聯絡電話</div>
-          <div class="info_text">{{ info.Phone }}</div>
-        </div>
-        <div class="info_item">
-          <div class="info_label">地址</div>
-          <div class="info_text">{{ info.Address }}</div>
+      <div class="lg:col-span-4">
+        <div class="info">
+          <div class="info_title">{{ categoryStr }}資訊</div>
+          <div class="info_item">
+            <div class="info_label">開放時間</div>
+            <div class="info_text">{{ info.OpenTime }}</div>
+          </div>
+          <div class="info_item">
+            <div class="info_label">聯絡電話</div>
+            <div class="info_text">{{ info.Phone }}</div>
+          </div>
+          <div class="info_item">
+            <div class="info_label">地址</div>
+            <div class="info_text">{{ info.Address }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -242,13 +246,13 @@ export default {
     @apply grid py-3 grid-cols-12 gap-14;
   }
   .content {
-    @apply col-span-8 mx-0;
+    @apply mx-0;
   }
   .content_subtitle {
     @apply mb-3 pt-2;
   }
   .info {
-    @apply col-span-4 pt-5 pb-10 rounded-2xl bg-white border border-j-black-100;
+    @apply pt-5 pb-10 rounded-2xl bg-white border border-j-black-100;
   }
 }
 </style>
