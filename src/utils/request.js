@@ -17,11 +17,18 @@ function getAuthorizationHeader() {
 const request = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
   timeout: 30000,
-  headers: getAuthorizationHeader(),
   withCredentials: true,
   params: {
     $format: 'JSON'
   }
 })
+
+request.interceptors.request.use(function (config) {
+  config.headers = getAuthorizationHeader()
+  return config;
+}, function (error) {
+  // Do something with request error
+  return Promise.reject(error);
+});
 
 export default request
