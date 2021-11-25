@@ -35,6 +35,10 @@ export default {
         PictureDescription2: null,
         PictureDescription3: null
       },
+      Position: {
+        PositionLon: null,
+        PositionLat: null
+      },
       OpenTime: null,
       Phone: null,
       Address: null

@@ -5,10 +5,20 @@
       <div class="location">
         <img src="@/assets/images/map.svg" />{{ info.City }}
       </div>
-      <div class="favorite" @click="clickAddFavorite">
-        <img v-show="isFavorite" src="@/assets/images/addedJourneyBig.svg" />
-        <img v-show="!isFavorite" src="@/assets/images/addJourneyBig.svg" />
-        加入收藏
+      <div class="left_side">
+        <a
+          class="fast_search"
+          target="_blank"
+          :href="`https://www.google.com/search?q=${info.Name}`"
+        >
+          <img src="@/assets/images/googleBig.svg" />
+          快速搜索
+        </a>
+        <div class="favorite" @click="clickAddFavorite">
+          <img v-show="isFavorite" src="@/assets/images/addedJourneyBig.svg" />
+          <img v-show="!isFavorite" src="@/assets/images/addJourneyBig.svg" />
+          加入收藏
+        </div>
       </div>
       <div class="desc">
         <template v-if="info.DescriptionDetail">
@@ -73,6 +83,16 @@
             <div class="info_label">地址</div>
             <div class="info_text">{{ info.Address }}</div>
           </div>
+          <div class="info_map">
+            <iframe
+              v-if="info.Position.PositionLat && info.Position.PositionLon"
+              :src="`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d${info.Position.PositionLat}!3d${info.Position.PositionLon}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xd03748c065726588!2z${coordinate}!5e0!3m2!1sen!2szh-tw`"
+              class="w-full"
+              height="200"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -104,9 +124,16 @@ export default {
       }
       store.commit('addFavorite', item)
     }
-
+    const coordinate = computed(() => {
+      const { PositionLat: x, PositionLon: y } = props.info.Position
+      if (x && y) {
+        return window.btoa(`${x},${y}`)
+      }
+      return ''
+    })
     return {
       isFavorite,
+      coordinate,
       clickAddFavorite
     }
   }
@@ -124,7 +151,7 @@ export default {
   @apply grid py-3 grid-cols-3 mx-5;
   grid-template-areas:
     'title title title'
-    'location location favorite'
+    'location left_side left_side'
     'desc desc desc';
 }
 .header_title {
@@ -134,22 +161,31 @@ export default {
 .location {
   grid-area: location;
 }
+.left_side {
+  grid-area: left_side;
+  @apply flex justify-end;
+}
+.fast_search {
+  @apply mr-2;
+}
 .favorite {
   @apply justify-end;
-  grid-area: favorite;
 }
 .location > img {
   @apply mr-3;
 }
-.favorite > img {
+.favorite > img,
+.fast_search > img {
   @apply mr-2;
 }
 .location > img,
-.favorite > img {
+.favorite > img,
+.fast_search > img {
   @apply w-5;
 }
 .location,
-.favorite {
+.favorite,
+.fast_search {
   @apply flex text-base py-2;
 }
 .desc {
@@ -205,7 +241,9 @@ export default {
 .info_text {
   @apply text-j-black-900 text-lg font-bold;
 }
-
+.info_map {
+  @apply px-5;
+}
 @screen lg {
   .wrap {
     @apply items-center mx-auto;
@@ -213,10 +251,10 @@ export default {
   }
   .header {
     @apply mx-0 pt-3 pb-10 w-full;
-    grid-template-columns: auto 1fr 64px;
+    grid-template-columns: auto 1fr 144px;
     grid-template-areas:
-      'title location favorite'
-      'desc desc favorite';
+      'title location left_side'
+      'desc desc left_side';
   }
   .header_title {
     @apply mr-11;
@@ -224,10 +262,18 @@ export default {
   .desc {
     @apply w-9/12 pt-3;
   }
-  .favorite > img {
+  .left_side {
+    white-space: nowrap;
+  }
+  .fast_search {
+    @apply mr-4;
+  }
+  .favorite > img,
+  .fast_search > img {
     @apply w-10;
   }
-  .favorite {
+  .favorite,
+  .fast_search {
     @apply flex-col justify-end items-center py-0;
   }
   .images {
@@ -253,6 +299,9 @@ export default {
   }
   .info {
     @apply pt-5 pb-10 rounded-2xl bg-white border border-j-black-100;
+  }
+  .info_map {
+    @apply px-10;
   }
 }
 </style>
